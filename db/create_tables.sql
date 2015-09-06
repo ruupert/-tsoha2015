@@ -11,7 +11,7 @@ CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
 
 SET search_path = public, pg_catalog;
 
-CREATE FUNCTION trigger_create_initial_timestamp() RETURNS trigger
+CREATE FUNCTION trigger_create_initial_user_timestamp() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
@@ -22,11 +22,21 @@ BEGIN
 END;
 $$;
 
+CREATE OR REPLACE FUNCTION trigger_create_initial_timestamp()
+  RETURNS trigger AS
+$$
+BEGIN
+   NEW.created_at = now();
+   NEW.modified_at = now();
+   RETURN NEW;
+END;
+
+
 CREATE FUNCTION trigger_update_modified_timestamp() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-   NEW.updated_at = now();
+   NEW.modified_at = now();
    RETURN NEW;
 END;
 $$;
@@ -193,7 +203,7 @@ CREATE TRIGGER trigger_create_timetable_timestamp
 CREATE TRIGGER trigger_create_user_timestamp
     BEFORE INSERT ON users
     FOR EACH ROW
-    EXECUTE PROCEDURE trigger_create_initial_timestamp();
+    EXECUTE PROCEDURE trigger_create_initial_user_timestamp();
 
 CREATE TRIGGER trigger_update_movie_timestamp
     BEFORE UPDATE ON movie
