@@ -1,1 +1,1 @@
-# actions: login, logout, register
+# actions: index list login, logout, register, create, update, destroy

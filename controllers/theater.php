@@ -1,1 +1,1 @@
-# actions: new list, show, modify, delete
+# actions: index new list, show, modify, create, update, destroy
