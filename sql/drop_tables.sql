@@ -1,1 +1,47 @@
--- Lisää DROP TABLE lauseet tähän tiedostoon
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+
+ALTER TABLE ONLY public.reservation DROP CONSTRAINT fk_user;
+ALTER TABLE ONLY public.reservation DROP CONSTRAINT fk_timetable;
+ALTER TABLE ONLY public.timetable DROP CONSTRAINT fk_theater;
+ALTER TABLE ONLY timetable DROP CONSTRAINT fk_movie;
+DROP TRIGGER trigger_update_user_timestamp ON users;
+DROP TRIGGER trigger_update_timetable_timestamp ON timetable;
+DROP TRIGGER trigger_update_theater_timestamp ON theater;
+DROP TRIGGER trigger_update_reservation_timestamp ON reservation;
+DROP TRIGGER trigger_update_movie_timestamp ON movie;
+DROP TRIGGER trigger_create_user_timestamp ON users;
+DROP TRIGGER trigger_create_timetable_timestamp ON timetable;
+DROP TRIGGER trigger_create_theater_timestamp ON theater;
+DROP TRIGGER trigger_create_reservation_timestamp ON reservation;
+DROP TRIGGER trigger_create_movie_timestamp ON movie;
+ALTER TABLE ONLY users DROP CONSTRAINT unique_username;
+ALTER TABLE ONLY users DROP CONSTRAINT pk_user;
+ALTER TABLE ONLY timetable DROP CONSTRAINT pk_timetable;
+ALTER TABLE ONLY theater DROP CONSTRAINT pk_theater;
+ALTER TABLE ONLY reservation DROP CONSTRAINT pk_reservation;
+ALTER TABLE ONLY movie DROP CONSTRAINT pk_movie;
+ALTER TABLE users ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE timetable ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE theater ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE reservation ALTER COLUMN id DROP DEFAULT;
+ALTER TABLE movie ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE user_id_seq;
+DROP TABLE users;
+DROP SEQUENCE timetable_id_seq;
+DROP TABLE timetable;
+DROP SEQUENCE theater_id_seq;
+DROP TABLE theater;
+DROP SEQUENCE reservation_id_seq;
+DROP TABLE reservation;
+DROP SEQUENCE movie_id_seq;
+DROP TABLE movie;
+DROP FUNCTION trigger_update_modified_timestamp();
+DROP FUNCTION trigger_create_initial_timestamp();
+DROP FUNCTION trigger_create_initial_user_timestamp();
