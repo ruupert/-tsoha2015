@@ -4,5 +4,14 @@
   <div class="page-header">
     <h1>Listing.. </h1>
   </div>
+  <table><tr><th></th><th>Nimi</th><th>Kuvaus<th><th>Kesto (min)</th></tr>
+    
+    {% for movie in movies %}
+    <tr><td></td><td>{{ movie.name }}</td><td>{{ movie.description }}</td><td>{{ movie.duration }}</td></tr>
+  {% else %}
+  Ei leffoja :(
+  {% endfor %}
+  
 
+  
 {% endblock %}

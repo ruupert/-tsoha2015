@@ -3,8 +3,6 @@
   error_reporting(E_ALL);
   ini_set('display_errors', '1');
 
-  session_cache_limiter(false);
-  session_start();
 
 
   // Selvitetään, missä kansiossa index.php on
@@ -22,6 +20,7 @@
 
   // Luodaan uusi tai palautetaan olemassaoleva sessio
   if(session_id() == '') {
+    session_cache_limiter(false);
     session_start();
   }
 
@@ -37,6 +36,7 @@
   $routes->get('/tietokantayhteys', function(){
     DB::test_connection();
   });
+
 
   // Otetaan reitit käyttöön
   require 'config/routes.php';

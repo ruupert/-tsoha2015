@@ -5,6 +5,7 @@
     public static function index(){
     	   	  View::make('theater-list.html');
     }
+
     public static function show(){
           View::make('theater-show.html');
 

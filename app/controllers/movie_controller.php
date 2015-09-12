@@ -3,8 +3,14 @@
   class MovieController extends BaseController{
 
     public static function index(){
-      // make-metodi renderöi app/views-kansiossa sijaitsevia tiedostoja
-   	  View::make('movie-list.html');
+	   
+     	   $conn = DB::connection();
+	   $query = $conn->prepare('SELECT name,description,duration,image FROM movie;');
+	   $query->execute();
+	   $movies = $query->fetchAll();
+
+    	  // make-metodi renderöi app/views-kansiossa sijaitsevia tiedostoja
+   	  View::make('movie-list.html', array('movies' => $movies));
     }
 
     public static function show(){

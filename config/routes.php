@@ -38,16 +38,16 @@
   
 
   $routes->get('/timetable', function() {
-    MovieController::index();
+    TimetableController::index();
   });
 
   $routes->get('/timetable/:id/show', function($id) {
-    MovieController::show($id);
+    TimetableController::show($id);
   });
   
 /* ei tarvii tai ehkä halutaan kieltää tää muokkaaminen
   $routes->get('/timetable/:id/edit', function($id) {
-    MovieController::edit($id);
+    TimetableController::edit($id);
   });
 */
 
