@@ -1,6 +1,0 @@
-<?php
-$_GLOBALS['db_host']='HOST';
-$_GLOBALS['username']='USERNAME';
-$_GLOBALS['password']='PASSWORD';
-$_GLOBALS['db_port']=5432;
-?>

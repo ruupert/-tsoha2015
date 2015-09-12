@@ -1,1 +1,0 @@
-# geneerinen listaus
