@@ -2,5 +2,5 @@
 
 source config/environment.sh
 
-ssh $USERNAME@users.cs.helsinki.fi '
-tail -f /home/userlogs/$USER.error'
+ssh -i /usr/home/ruupert/.ssh/id_rsa_kapsi $USERNAME@lakka.kapsi.fi '
+tail -f /home/users/ruupert/sites/ruupert.kapsi.fi/log/error.log'
