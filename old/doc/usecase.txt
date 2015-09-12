@@ -1,0 +1,13 @@
+[Vierailija]^[Peruskäyttäjä]
+[Peruskäyttäjä]^[Pääkäyttäjä]
+[Vierailija]-(Rekisteröityminen)
+[Peruskäyttäjä]-(Kirjautuminen)
+[Peruskäyttäjä]-(Uloskirjautuminen)
+[Vierailija]-(Selaa näytöksiä)
+[Vierailija]-(Selaa teattereita)
+[Vierailija]-(Selaa elokuvia)
+[Peruskäyttäjä]-(Peru varauksia)
+(Varaa lippuja)- [Peruskäyttäjä]
+[Pääkäyttäjä]-(Näytösten hallinta)
+[Pääkäyttäjä]-(Elokuvien hallinta)
+[Pääkäyttäjä]-(Teatterien hallinta)
