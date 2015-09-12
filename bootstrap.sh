@@ -35,4 +35,4 @@ curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 exit"
 
-echo "Valmis! Sovelluksesi on nyt valmiina osoitteessa $USERNAME.kapsi.fi/cs/$PROJECT_FOLDER"
+echo "Valmis! Sovelluksesi on nyt valmiina osoitteessa $USERNAME.kapsi.fi/$PROJECT_FOLDER"
