@@ -1,20 +1,31 @@
 <?php
 
   class MovieController extends BaseController{
-
+	
     public static function index(){
-	   
+	    
      	   $conn = DB::connection();
-	   $query = $conn->prepare('SELECT name,description,duration,image FROM movie;');
+	   $query = $conn->prepare('SELECT id,name,description,duration,image FROM movie;');
 	   $query->execute();
 	   $movies = $query->fetchAll();
+	   $conn = null;
 
+	    
     	  // make-metodi renderöi app/views-kansiossa sijaitsevia tiedostoja
    	  View::make('movie-list.html', array('movies' => $movies));
     }
 
-    public static function show(){
-   	  View::make('movie-show.html');
+    public static function show($id){
+
+     	   $conn = DB::connection();
+	   $query = $conn->prepare("SELECT name,description,duration,image FROM movie where id=$id;");
+	   $query->execute();
+	   $details = $query->fetchAll();
+	   $conn = null;
+#           $links = CrudLinkhelper::show_links();   
+
+	    View::make('movie-show.html', array('details' => $details));
+
     	  
     }	  
 

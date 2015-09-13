@@ -8,7 +8,7 @@ source $DIR/config/environment.sh
 echo "Siirretään tiedostot users-palvelimelle..."
 
 # Tämä komento siirtää tiedostot palvelimelta
-rsync -z -r $DIR/app $DIR/assets $DIR/doc $DIR/config $DIR/lib $DIR/sql $DIR/vendor $DIR/index.php $DIR/composer.json $USERNAME@lakka.kapsi.fi:htdocs/$PROJECT_FOLDER
+rsync -z -r $DIR/app $DIR/assets $DIR/doc $DIR/doc/pages $DIR/config $DIR/lib $DIR/sql $DIR/vendor $DIR/index.php $DIR/composer.json $USERNAME@lakka.kapsi.fi:htdocs/$PROJECT_FOLDER
 
 echo "Valmis!"
 

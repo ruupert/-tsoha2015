@@ -15,6 +15,13 @@ Päädyttyäni lukemaan vähän ohjeita lisää, niin löytyi githubista Tsoha/T
 2015-09-12
 Testaan, että miten tän sai populoitua tsoha-bootstrapin tiedostoilla. Vaihdettu tsoha-boostrap ensisijaiseks branchiks. En keksinyt miten voisi forkata suoraan https://github.com/Tsoha/Tsoha-Bootstrap omaks branchiks tähän repoon.
 
+2015-09-13
+Oikaistu hieman. Kaikista sivuista ei tullut staattista näytekappaletta. Jokatapauksessa ne mitä on ovat:
 
+http://ruupert.kapsi.fi/tsoha2015/doc/pages/movies-edit.html
+http://ruupert.kapsi.fi/tsoha2015/doc/pages/movies-new.html
 
-           
+Ja loput toiminnassa:
+
+http://ruupert.kapsi.fi/tsoha2015/movie
+http://ruupert.kapsi.fi/tsoha2015/movie/1/show

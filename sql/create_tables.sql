@@ -94,6 +94,7 @@ CREATE TABLE timetable (
     created_at timestamp without time zone NOT NULL,
     modified_at timestamp without time zone NOT NULL,
     start_at timestamp without time zone NOT NULL,
+    end_at timestamp without time zone NOT NULL,
     movie_id integer NOT NULL,
     theater_id integer NOT NULL
 );
@@ -112,7 +113,7 @@ CREATE TABLE users (
     created_at timestamp without time zone NOT NULL,
     modified_at timestamp without time zone NOT NULL,
     admin boolean DEFAULT false NOT NULL,
-    username text NOT NULL,
+    username text UNIQUE NOT NULL,
     pw_hash text NOT NULL,
     name text NOT NULL,
     lastname text NOT NULL

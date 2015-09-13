@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="page-header">
-    <h1>Show</h1>
-  </div>
+  {% for detail in details %}
 
-{% endblock %}
+  <div class="page-header">
+  <h1>{{detail.name}}</h1>
+  </div>
+  <p>{{detail.description}}</p>
+  <p>{{detail.duration}}</p>
+  <img src="{{detail.image}}"/>
+
+  {% else %}
+  Ei tietoja?! :O
+  {% endfor %}
+  
+
+  
+
+
+  {% endblock %}

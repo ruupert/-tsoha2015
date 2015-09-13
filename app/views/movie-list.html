@@ -2,12 +2,25 @@
 
 {% block content %}
   <div class="page-header">
-    <h1>Listing.. </h1>
+    <h1>Elokuvat</h1>
   </div>
-  <table><tr><th></th><th>Nimi</th><th>Kuvaus<th><th>Kesto (min)</th></tr>
-    
+  <table>
+	  <tr>
+		  <th></th>
+		  <th>Nimi</th>
+		  <th>Kuvaus</th>
+		  <th>Kesto (min)</th>
+		  <th></th>
+	  </tr>
+	  
     {% for movie in movies %}
-    <tr><td></td><td>{{ movie.name }}</td><td>{{ movie.description }}</td><td>{{ movie.duration }}</td></tr>
+	  <tr>
+		  <td></td>
+		  <td>{{ movie.name }}</td>
+		  <td>{{ movie.description }}</td>
+		  <td>{{ movie.duration }}</td>
+		  <td><a href='movie/{{movie.id}}/show'>Näytä</a></td>
+	  </tr>
   {% else %}
   Ei leffoja :(
   {% endfor %}
