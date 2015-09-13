@@ -1,9 +1,29 @@
 <?php
 
-  class MovieModel extends BaseModel{
+class MovieModel extends BaseModel{
 
-    public static function getMovies(){
-    	   $res = self::$connection->prepare("select name, description, duration, image from movie;");
-    	   $res->execute();
+    public function __construct($id) {
+ 		
     }
+	  
+    public static function all(){
+	    
+    }
+    private function find(){
+
+    }
+    private function get(){
+
+    }
+    private function save(){
+
+    }
+    private function add(){
+
+    }
+
+    private function remove(){
+
+    }
+
   }
