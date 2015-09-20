@@ -1,55 +1,70 @@
 <?php
 
-  class MovieController extends BaseController{
+class MovieController extends BaseController{
+
+// 	Plaah!
+//	Function __construct() {
+//		require_once "app/models/movie_model.php";
+//	}
+
 	
-    public static function index(){
-	    
-     	   $conn = DB::connection();
-	   $query = $conn->prepare('SELECT id,name,description,duration,image FROM movie;');
-	   $query->execute();
-	   $movies = $query->fetchAll();
-	   $conn = null;
+	public static function index(){
 
-	    
-    	  // make-metodi renderöi app/views-kansiossa sijaitsevia tiedostoja
-   	  View::make('movie-list.html', array('movies' => $movies));
-    }
+		require_once "app/models/movie_model.php";
+ 		$model = new MovieModel();
+		
+		
+   		View::make('movie-list.html', $model->all());
+	}
+	
+	public static function show($id){
+		
+		require_once "app/models/movie_model.php";
+		$model = new MovieModel();
 
-    public static function show($id){
+		
+		
+#		Kint::dump($model->find($id));
 
-     	   $conn = DB::connection();
-	   $query = $conn->prepare("SELECT name,description,duration,image FROM movie where id=$id;");
-	   $query->execute();
-	   $details = $query->fetchAll();
-	   $conn = null;
-#           $links = CrudLinkhelper::show_links();   
+		
+		parent::generate_links();
+		View::make('movie-show.html',$model->find($id));
+		
+    		
+	}	  
+	
+	public static function edit(){
 
-	    View::make('movie-show.html', array('details' => $details));
+		// get_user_logged_in()
+		// check_logged_in()
+		// 
+   		View::make('movie-edit.html');
+		
+	}
+	public static function add(){
+   		View::make('movie-new.html');
+		
+	}
+	
+	public static function create(){
 
-    	  
-    }	  
+	}
+	public static function update(){
+		
+	}
+	public static function destroy(){
+		
+	}
+	
+	public static function sandbox(){
+		// Testaa koodiasi täällä
 
-    public static function edit(){
-   	  View::make('movie-edit.html');
-    
-    }
-    public static function add(){
-   	  View::make('movie-new.html');
-    
-    }
-
-    public static function create(){
-
-    }
-    public static function update(){
-    
-    }
-    public static function destroy(){
-    
-    }
-
-    public static function sandbox(){
-      // Testaa koodiasi täällä
-      echo 'Hello World!';
-    }
-  }
+		require_once "app/models/movie_model.php";
+ 		$model = new MovieModel();
+		Kint::dump($model);
+		
+#		View::make('movie-list.html', MovieModel::all());
+		
+		
+	}
+}

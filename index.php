@@ -30,12 +30,14 @@
   // Otetaan Composer käyttöön
   require 'vendor/autoload.php';
 
-  $routes = new \Slim\Slim();
-  $routes->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
-
-  $routes->get('/tietokantayhteys', function(){
-    DB::test_connection();
-  });
+ $routes = new \Slim\Slim(); 
+ $routes->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
+ 
+ $routes->config('cookies.lifetime', '20 minutes');
+ $routes->config('cookies.cipher', MCRYPT_RIJNDAEL_256);
+ $routes->get('/tietokantayhteys', function(){
+	 DB::test_connection();
+ });
 
 
   // Otetaan reitit käyttöön

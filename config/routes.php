@@ -8,6 +8,8 @@ $routes->get('/hiekkalaatikko',            function()        {   HelloWorldContr
 $routes->get('/movie',                     function()        {   MovieController::index();              });
 $routes->get('/movie/:id/show',            function($id)     {   MovieController::show($id);            });
 $routes->get('/movie/:id/edit',            function($id)     {   MovieController::edit($id);            });
+$routes->get('/movie/sandbox',             function()        {   MovieController::sandbox();            });
+
 //$routes->post('/movie/:id/destroy')        function($id)     {   MovieController::destroy($id);         });
 //$routes->post('/movier/create')            function($id)     {   MovieController::create();             });
 // 
@@ -26,7 +28,10 @@ $routes->get('/timetable/:id/edit',        function($id)     {   TimetableContro
 //$routes->post('/timetable/create')         function($id)     {   TimetableController::create();         });
 //
 // UserController
-$routes->get('/user',                      function()        {   UserController::index();               });
+$routes->get('/user',                      function()        {   UserController::index();              });
+$routes->get('/login',                     function()        {   UserController::login();              });
+$routes->get('/logout',                    function()        {   UserController::logout();             });
+$routes->get('/register',                  function()        {   UserController::register();           });
 //
 // ReservationController
 $routes->get('/reservation',               function()        {   ReservationController::index();        });
