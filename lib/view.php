@@ -5,8 +5,10 @@
     public static function make($view, $content = array()){
       // Alustetaan Twig
       $twig = self::get_twig();
-	    var_dump($content);
-      try{
+	  //  print_r($content);
+	  //  print_r($view);
+	 //   print_r($GLOBALS);
+	try{
         // Asetetaan uudelleenohjauksen yhteydessä lisätty viesti
         self::set_flash_message($content);
 

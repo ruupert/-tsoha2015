@@ -49,9 +49,11 @@ class UserController extends BaseController{
 				$_SESSION['admin']=true;
 			}
 		// laitetaan formin sivulla keksiin referrer ja ohjataan kayttaja takas mista alunperin lahti.	
-//		Redirect::to("/", "Paasit onnistuneesti kirjautumaan");	
+			// testiksi johonkin polkuun.
+			Redirect::to('/movie','Tervetuloa');		
+				
 		} else {
-//			Redirect::to("/login", "Epäkelpo tunnus tai salasana");
+			Redirect::to('/login','Kokeile uudestaan');		
 		}
 	
        }
