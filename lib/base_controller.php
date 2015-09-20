@@ -11,7 +11,7 @@
 	  }
 	  
 	  public static function check_logged_in(){
-		  if (!(isset($_SESSION['login']) && $_SESSION['login'] != '')) {
+		  if (!(isset($_SESSION['logged']) && $_SESSION['logged'] != '')) {
 			  Redirect::to('/login', 'Kirjautu!');
 		  }
 			  

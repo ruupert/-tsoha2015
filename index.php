@@ -33,9 +33,12 @@
  $routes = new \Slim\Slim(); 
  $routes->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
  
- $routes->config('cookies.lifetime', '20 minutes');
- $routes->config('cookies.cipher', MCRYPT_RIJNDAEL_256);
- $routes->get('/tietokantayhteys', function(){
+// $routes->config('cookies.lifetime', '20 minutes');
+// $routes->config('cookies.encrypt' => true);
+// $routes->config('cookies.secret_key' => 'gldkfkldfagjöklsfjgkldsmbklv342r23');
+// $routes->config('cookies.cipher', MCRYPT_RIJNDAEL_256);
+
+$routes->get('/tietokantayhteys', function(){
 	 DB::test_connection();
  });
 

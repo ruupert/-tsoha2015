@@ -30,6 +30,7 @@ $routes->get('/timetable/:id/edit',        function($id)     {   TimetableContro
 // UserController
 $routes->get('/user',                      function()        {   UserController::index();              });
 $routes->get('/login',                     function()        {   UserController::login();              });
+$routes->post('/logincheck',               function()        {   UserController::login_check();        });
 $routes->get('/logout',                    function()        {   UserController::logout();             });
 $routes->get('/register',                  function()        {   UserController::register();           });
 //

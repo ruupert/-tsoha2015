@@ -5,7 +5,7 @@
     public static function make($view, $content = array()){
       // Alustetaan Twig
       $twig = self::get_twig();
-
+	    var_dump($content);
       try{
         // Asetetaan uudelleenohjauksen yhteydessä lisätty viesti
         self::set_flash_message($content);

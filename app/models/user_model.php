@@ -1,31 +1,30 @@
 <?php
 
-class MovieModel extends BaseModel{
-	public static $conn; 
+class UserModel extends BaseModel{
+	private $conn;
 	
-	public function __construct() {
+	function __construct() {
 		// hyvinpa toimii juuh... huhhuh.
-		//$conn = DB::connection();
+		$this->conn = DB::connection();
 	}
 
-	public function __destruct() {
-		$conn = null;
+	function __destruct() {
+		//$ = null;
 	}
 	
 	public static function all(){
  		
-   		$conn = DB::connection();
-		$query = $conn->prepare('SELECT id,name,description,duration,image FROM movie;');
-		$query->execute();
-		return array('movies' => $query->fetchAll());
+ 	//	$query $self->conn->prepare('SELECT id,name,description,duration,image FROM movie;');
+	//	$query->execute();
+	//	return array('movies' => $query->fetchAll());
 		
 	}
 	public function find($id){
-   		$conn = DB::connection();
-		$query = $conn->prepare("SELECT name,description,duration,image FROM movie where id=$id;");
+		
+		$query = $this->conn->prepare("SELECT admin,created_at,username,pw_hash FROM users where username='$id';");
 		$query->execute();
 		
-		return array('details' => $query->fetchAll());
+		return $query->fetch();
 	}
 	private function get($id){
 		

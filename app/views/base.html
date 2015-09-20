@@ -39,7 +39,12 @@
         <div class="collapse navbar-collapse" id="navigation">
           <ul class="nav navbar-nav">
             <!-- Navigaation linkit -->
-            <li><a href="{{base_path}}/movie">Elokuvat</a></li>
+	    {% if user_logged_in == null %}
+	      <li><a href="{{base_path}}/login">Kirjaudu</a></li>
+	    {% else %}
+	      <li><a href="{{base_path}}/logout">Uloskirjautuminen</a></li>
+	    {% endif %}
+	    <li><a href="{{base_path}}/movie">Elokuvat</a></li>
             <li><a href="{{base_path}}/theater">Teatterit</a></li>
             <li><a href="{{base_path}}/timetable">Naytökset</a></li>
           </ul>
