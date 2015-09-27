@@ -8,3 +8,7 @@
   max-width: 1200px;
   margin: 0px auto;
 }
+tr.clickable:hover {
+    background: grey;
+    cursor:pointer;
+}

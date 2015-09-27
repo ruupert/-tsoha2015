@@ -12,9 +12,8 @@
   </div>
   <p>{{detail.description}}</p>
   <p>{{detail.duration}}</p>
-  <img src="{{detail.image}}"/>
+  <img src="data:image/png;base64,{{detail.image}}"/>
    
-  
   {% else %}
   Ei tietoja?! :O
   {% endfor %}

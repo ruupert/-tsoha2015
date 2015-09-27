@@ -18,6 +18,9 @@ class MovieController extends BaseController{
 	public static function edit($id){
 		$result = MovieModel::find($id);
 		$result = $result['details'][0];
+
+
+		
 		
 		$form = new \PFBC\Form("form-elements");
 
@@ -27,12 +30,13 @@ class MovieController extends BaseController{
 		$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1, "value" => $result['name'])));
 		$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1, "value" => $result['description'])));
 		$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1, "value" => $result['duration'])));
-		$form->addElement(new \PFBC\Element\HTML("<img src='" . $result['image'] . "'/>"));
+		$form->addElement(new \PFBC\Element\HTML("<img src='data:image/png;base64," . $result['image'] . "'/>"));
 		$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
 		$form->addElement(new \PFBC\Element\Button);
 		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
 			"onclick" => "history.go(-1);"
 		)));
+		
 		
    		View::make('form-layout.html', array('form' => $form->render($returnHTML = true)));
 		
@@ -59,16 +63,14 @@ class MovieController extends BaseController{
 	}
 	
 	public static function create(){
-		if ($_FILES['image'] == null)  {
-			$image = null;
-		} else {
-			$image = $_FILES['image'];
-		}
+
 		$obj = new MovieModel();
-		$obj->add($_POST['name'],$_POST['description'],$_POST['duration'],$image);
+		$obj->add($_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
 		
 	}
-	public static function update(){
+	public static function update($id){
+		$obj = new MovieModel();
+		$obj->save($id,$_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
 		
 	}
 	public static function destroy(){

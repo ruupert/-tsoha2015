@@ -10,16 +10,14 @@
 		  <th>Nimi</th>
 		  <th>Kuvaus</th>
 		  <th>Kesto (min)</th>
-		  <th></th>
 	  </tr>
 	  
     {% for movie in movies %}
-	  <tr>
+	  <tr class='clickable' data-href='movie/{{movie.id}}/show'>
 		  <td></td>
 		  <td>{{ movie.name }}</td>
 		  <td>{{ movie.description }}</td>
 		  <td>{{ movie.duration }}</td>
-		  <td><a href='movie/{{movie.id}}/show'>Näytä</a></td>
 	  </tr>
   {% else %}
   Ei leffoja :(

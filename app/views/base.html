@@ -64,7 +64,15 @@
     {% block body %}
       <!-- jQuery -->
       <script src="{{base_path}}/vendor/jquery.min.js"></script>
+      <script type='text/javascript'>
 
+      jQuery(document).ready(function($) {
+	      $(".clickable").click(function() {
+		      window.document.location = $(this).data("href");
+	      });
+	      });
+      </script>
+      
       <!-- Bootstrap (skriptitiedosto) -->
       <script src="{{base_path}}/vendor/bootstrap/js/bootstrap.min.js"></script>
 
