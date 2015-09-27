@@ -40,6 +40,8 @@
 // $routes->config('cookies.secret_key' => 'gldkfkldfagjöklsfjgkldsmbklv342r23');
 // $routes->config('cookies.cipher', MCRYPT_RIJNDAEL_256);
 
+
+
 $routes->get('/tietokantayhteys', function(){
 	 DB::test_connection();
  });
