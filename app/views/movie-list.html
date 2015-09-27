@@ -3,6 +3,9 @@
 {% block content %}
   <div class="page-header">
     <h1>Elokuvat</h1>
+    {% for link in links %}
+       <a href="{{link.url}}">{{link.name}}</a>
+    {% endfor %}
   </div>
   <table>
 	  <tr>

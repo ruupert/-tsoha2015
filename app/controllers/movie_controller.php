@@ -3,14 +3,15 @@
 class MovieController extends BaseController{
 
 	public static function index(){
-
-   		View::make('movie-list.html', MovieModel::all());
+		
+		View::make('movie-list.html', array_merge(MovieModel::all(), array('links' => parent::addnew_link())));
+		
 	}
 	
 	public static function show($id){
 
-		parent::generate_links();
-		View::make('movie-show.html',MovieModel::find($id));
+
+		View::make('movie-show.html',array('movie' => MovieModel::find($id),'links' => parent::generate_links()));
 		
     		
 	}	  
@@ -64,17 +65,40 @@ class MovieController extends BaseController{
 	
 	public static function create(){
 
-		$obj = new MovieModel();
-		$obj->add($_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
+		if (parent::is_admin()==true) {
+		
+			$obj = new MovieModel();
+			$obj->add($_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
+			header('Location: ' . BASE_PATH . '/movie');
+			
+		} else {
+
+		}
 		
 	}
 	public static function update($id){
-		$obj = new MovieModel();
-		$obj->save($id,$_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
 		
+		if (parent::is_admin()==true) {
+		
+			$obj = new MovieModel();
+			$obj->save($id,$_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
+
+		} else {
+
+		}
+	     
 	}
-	public static function destroy(){
-		
+	public static function destroy($id){
+		if (parent::is_admin()==true) {
+			$obj = new MovieModel();
+			$obj->remove($id);
+			header('Location: /movie');
+
+		} else {
+			header('Location: ' . BASE_PATH . '/');
+
+		}
 	}
 	
 	public static function sandbox(){
@@ -82,9 +106,7 @@ class MovieController extends BaseController{
 
 		require_once "app/models/movie_model.php";
  		$model = new MovieModel();
-		Kint::dump($model);
 		
-#		View::make('movie-list.html', MovieModel::all());
 		
 		
 	}

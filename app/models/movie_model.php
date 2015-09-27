@@ -29,7 +29,8 @@ class MovieModel extends BaseModel{
 	}
 	
 	function save($id, $name, $description, $duration, $image){
-                $name = strip_tags($name);
+
+		$name = strip_tags($name);
 		$description =strip_tags($description);
 		$duration = strip_tags($duration);
 
@@ -45,7 +46,8 @@ class MovieModel extends BaseModel{
 				$query->bindParam(':img_data', $img_data, PDO::PARAM_LOB);
 				
 			} catch (Exception $e) {
-			        $query = $this->conn->prepare("UPDATE movie SET name=:name, description=:description, duration=:duration, image=null WHERE id=:id");
+				
+			        $query = $this->conn->prepare("UPDATE movie SET name=:name, description=:description, duration=:duration WHERE id=:id");
 				
 			}
 			
@@ -81,18 +83,19 @@ class MovieModel extends BaseModel{
 			try {
 				$img_file = fopen($image['tmp_name'], 'r');
 				$img_data = fread($img_file,$image['size']);
-				$query->bindParam(':img_data', $img_data, PDO::PARAM_LOB);
+				
 				$query = $this->conn->prepare("INSERT INTO movie (name,description,duration,image) VALUES (:name, :description, :duration, :img_data)");
-
+				$query->bindParam(':img_data', $img_data, PDO::PARAM_LOB);
 			} catch (Exception $e) {
 				$query = $this->conn->prepare("INSERT INTO movie (name,description,duration,image) VALUES (:name, :description, :duration, null)");
-
+				
 			}
+				$query->bindParam(':name', $name);
+				$query->bindParam(':description', $description);
+				$query->bindParam(':duration', $duration);
+				$query->execute();
 			
-			$query->bindParam(':name', $name);
-			$query->bindParam(':description', $description);
-			$query->bindParam(':duration', $duration);
-			$query->execute();
+			
 			
 			return true;
 		} else {
@@ -164,8 +167,11 @@ class MovieModel extends BaseModel{
 		return DB::connection();
 	}
 	
-	private function remove($id){
-		
+	function remove($id){
+		$query = $this->conn->prepare("DELETE FROM movie WHERE id=:id");
+		$query->bindParam(':id', $id);
+		$query->execute();
+		return true;
 	}
 	
 }
