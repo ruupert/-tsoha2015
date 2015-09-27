@@ -4,7 +4,6 @@ class MovieModel extends BaseModel{
 	public static $conn; 
 	
 	public function __construct() {
-		// hyvinpa toimii juuh... huhhuh.
 		//$conn = DB::connection();
 	}
 
@@ -20,7 +19,7 @@ class MovieModel extends BaseModel{
 		return array('movies' => $query->fetchAll());
 		
 	}
-	public function find($id){
+	public static function find($id){
    		$conn = DB::connection();
 		$query = $conn->prepare("SELECT name,description,duration,image FROM movie where id=$id;");
 		$query->execute();

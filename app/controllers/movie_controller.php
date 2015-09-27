@@ -2,47 +2,59 @@
 
 class MovieController extends BaseController{
 
-// 	Plaah!
-//	Function __construct() {
-//		require_once "app/models/movie_model.php";
-//	}
-
-	
 	public static function index(){
 
-		require_once "app/models/movie_model.php";
- 		$model = new MovieModel();
-		
-		
-   		View::make('movie-list.html', $model->all());
+   		View::make('movie-list.html', MovieModel::all());
 	}
 	
 	public static function show($id){
-		
-		require_once "app/models/movie_model.php";
-		$model = new MovieModel();
 
-		
-		
-#		Kint::dump($model->find($id));
-
-		
 		parent::generate_links();
-		View::make('movie-show.html',$model->find($id));
+		View::make('movie-show.html',MovieModel::find($id));
 		
     		
 	}	  
 	
-	public static function edit(){
+	public static function edit($id){
+		$result = MovieModel::find($id);
+		$result = $result['details'][0];
+		
+		$form = new \PFBC\Form("form-elements");
 
-		// get_user_logged_in()
-		// check_logged_in()
-		// 
-   		View::make('movie-edit.html');
+		$form->configure(array(
+			"prevent" => array("bootstrap", "jQuery"), "action" => "./update"
+		));
+		$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1, "value" => $result['name'])));
+		$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1, "value" => $result['description'])));
+		$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1, "value" => $result['duration'])));
+		$form->addElement(new \PFBC\Element\HTML("<img src='" . $result['image'] . "'/>"));
+		$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
+		$form->addElement(new \PFBC\Element\Button);
+		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
+			"onclick" => "history.go(-1);"
+		)));
+		
+   		View::make('form-layout.html', array('form' => $form->render($returnHTML = true)));
 		
 	}
 	public static function add(){
-   		View::make('movie-new.html');
+
+		$form = new \PFBC\Form("form-elements");
+
+		$form->configure(array(
+			"prevent" => array("bootstrap", "jQuery"), "action" => "./update"
+		));
+		$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1)));
+		$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1)));
+		$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1)));
+		$form->addElement(new \PFBC\Element\HTML("<img src='" . $result['image'] . "'/>"));
+		$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
+		$form->addElement(new \PFBC\Element\Button);
+		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
+			"onclick" => "history.go(-1);"
+		)));
+		
+   		View::make('form-layout.html', array('form' => $form->render($returnHTML = true)));
 		
 	}
 	

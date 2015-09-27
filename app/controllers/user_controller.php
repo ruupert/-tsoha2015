@@ -43,26 +43,31 @@ class UserController extends BaseController{
 		$result = $model->find($_POST['username']);
 
 		if (md5($result['created_at'].$_POST['password'])==$result['pw_hash']) {
-			$_SESSION['logged']=true;
+			$_SESSION['logged_in']=true;
+			$_SESSION['username']=$result['username'];
 			if ($result['admin'] == true) {
 				// vain linkkien nakyvyytta varten. toimintojen yhteydessa tarkistus tehdaan kuitenkin erikseen.
-				$_SESSION['admin']=true;
+				$_SESSION['admin_user']=true;
 			}
-		// laitetaan formin sivulla keksiin referrer ja ohjataan kayttaja takas mista alunperin lahti.	
+			// laitetaan formin sivulla keksiin referrer ja ohjataan kayttaja takas mista alunperin lahti.	
 			// testiksi johonkin polkuun.
-			Redirect::to('/movie','Tervetuloa');		
+			$_SESSION['flash_message'] = json_encode('tervetuloa');
+ 			header('Location: ' . BASE_PATH . '/movie');
+			
+			//Redirect::to('/movie','Tervetuloa');		
 				
 		} else {
-			Redirect::to('/login','Kokeile uudestaan');		
+			$_SESSION['flash_message'] = json_encode('Kokeile uudestaan');
+ 			header('Location: ' . BASE_PATH . '/logine');
+			//Redirect::to('/login','Kokeile uudestaan');		
 		}
 	
        }
 	public static function logout(){
-   		View::make('user-logout.html');
 		
 	}
 	public static function register(){
-   		View::make('user-register.html');
+   		View::make('form-layout.html');
 		
 	}
 	

@@ -4,16 +4,19 @@
 	  public $navlinks;
 	  
 	  public static function get_user_logged_in(){
+		  if (isset($_SESSION['username'])) {
+			  return $_SESSION['username'];
+		  } else {
+			  return null;
+		  }
 		  
 		  
-	    // Toteuta kirjautuneen käyttäjän haku tähän
-		  return null;
 	  }
 	  
 	  public static function check_logged_in(){
-#		  if (!(isset($_SESSION['logged']) && $_SESSION['logged'] != '')) {
-#			  Redirect::to('/login', 'Kirjautu!');
-#		  }
+		  if (!(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] != '')) {
+			  Redirect::to('/login', 'Kirjautu!');
+		  }
 			  
 	  }
 	  
