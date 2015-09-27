@@ -4,24 +4,21 @@ class UserModel extends BaseModel{
 	private $conn;
 	
 	function __construct() {
-		// hyvinpa toimii juuh... huhhuh.
-		$this->conn = DB::connection();
+		$this->conn = $this->getDB();
 	}
 
 	function __destruct() {
-		//$ = null;
+		$this->conn = null;
 	}
 	
 	public static function all(){
  		
- 	//	$query $self->conn->prepare('SELECT id,name,description,duration,image FROM movie;');
-	//	$query->execute();
-	//	return array('movies' => $query->fetchAll());
 		
 	}
-	public function find($id){
+	public static function find($id){
 		
-		$query = $this->conn->prepare("SELECT admin,created_at,username,pw_hash FROM users where username='$id';");
+		$conn = DB::connection();
+		$query = $conn->prepare("SELECT admin,created_at,username,pw_hash FROM users where username='$id';");
 		$query->execute();
 		
 		return $query->fetch();
@@ -39,5 +36,10 @@ class UserModel extends BaseModel{
 	private function remove($id){
 		
 	}
+
+        private function getDB() {
+		return DB::connection();
+	}
+	
 	
 }

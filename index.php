@@ -20,7 +20,7 @@
 
   // Luodaan uusi tai palautetaan olemassaoleva sessio
   if(session_id() == '') {
-    session_cache_limiter(false);
+//    session_cache_limiter(false);
     session_start();
   }
 
@@ -32,7 +32,9 @@
 
  $routes = new \Slim\Slim(); 
  $routes->add(new \Zeuxisoo\Whoops\Provider\Slim\WhoopsMiddleware);
- 
+
+
+
 // $routes->config('cookies.lifetime', '20 minutes');
 // $routes->config('cookies.encrypt' => true);
 // $routes->config('cookies.secret_key' => 'gldkfkldfagjöklsfjgkldsmbklv342r23');
@@ -45,5 +47,5 @@ $routes->get('/tietokantayhteys', function(){
 
   // Otetaan reitit käyttöön
   require 'config/routes.php';
-
+//Kint::dump($routes);
   $routes->run();
