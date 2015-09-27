@@ -12,7 +12,7 @@ $routes->get('/movie/:id/edit',            function($id)     {   MovieController
 $routes->post('/movie/:id/update',         function($id)     {   MovieController::update($id);          });
 $routes->get('/movie/sandbox',             function()        {   MovieController::sandbox();            });
 $routes->post('/movie/create',             function()        {   MovieController::create();             });
-$routes->post('/movie/:id/destroy',        function($id)     {   MovieController::destroy($id);         });
+$routes->get('/movie/:id/destroy',        function($id)     {   MovieController::destroy($id);         });
 // 
 // TheaterController
 $routes->get('/theater',                   function()        {   TheaterController::index();            });

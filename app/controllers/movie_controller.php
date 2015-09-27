@@ -69,7 +69,7 @@ class MovieController extends BaseController{
 		
 			$obj = new MovieModel();
 			$obj->add($_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
-			header('Location: ' . BASE_PATH . '/movie');
+			header('Location: ' . $_SERVER['HTTP_REFERER']);
 			
 		} else {
 
@@ -93,10 +93,10 @@ class MovieController extends BaseController{
 		if (parent::is_admin()==true) {
 			$obj = new MovieModel();
 			$obj->remove($id);
-			header('Location: /movie');
+			Redirect::to('/movie');
 
 		} else {
-			header('Location: ' . BASE_PATH . '/');
+			Redirect::to('/movie');
 
 		}
 	}
