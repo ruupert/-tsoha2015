@@ -10,9 +10,9 @@ $routes->get('/movie/new',                 function()        {   MovieController
 $routes->get('/movie/:id/show',            function($id)     {   MovieController::show($id);            });
 $routes->get('/movie/:id/edit',            function($id)     {   MovieController::edit($id);            });
 $routes->get('/movie/sandbox',             function()        {   MovieController::sandbox();            });
+$routes->post('/movie/create',              function()        {   MovieController::create();             });
 
 //$routes->post('/movie/:id/destroy')        function($id)     {   MovieController::destroy($id);         });
-//$routes->post('/movier/create')            function($id)     {   MovieController::create();             });
 // 
 // TheaterController
 $routes->get('/theater',                   function()        {   TheaterController::index();            });

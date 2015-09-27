@@ -38,28 +38,35 @@ class MovieController extends BaseController{
 		
 	}
 	public static function add(){
-
+		$form_action = BASE_PATH . "/movie/create";
+		
 		$form = new \PFBC\Form("form-elements");
 
 		$form->configure(array(
-			"prevent" => array("bootstrap", "jQuery"), "action" => "./update"
+			"prevent" => array("bootstrap", "jQuery"), "action" => $form_action, "method" => "post"
 		));
+
 		$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1)));
 		$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1)));
 		$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1)));
-		$form->addElement(new \PFBC\Element\HTML("<img src='" . $result['image'] . "'/>"));
 		$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
 		$form->addElement(new \PFBC\Element\Button);
 		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
 			"onclick" => "history.go(-1);"
 		)));
-		
-   		View::make('form-layout.html', array('form' => $form->render($returnHTML = true)));
+   		View::make('form-layout.html', array('form' => $form->render($returnHTML = true), 'page_title' => 'Uusi elokuva'));
 		
 	}
 	
 	public static function create(){
-
+		if ($_FILES['image'] == null)  {
+			$image = null;
+		} else {
+			$image = $_FILES['image'];
+		}
+		$obj = new MovieModel();
+		$obj->add($_POST['name'],$_POST['description'],$_POST['duration'],$image);
+		
 	}
 	public static function update(){
 		

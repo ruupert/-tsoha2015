@@ -4,43 +4,29 @@ class UserController extends BaseController{
 
 	
 	public static function index(){
-
-		require_once "app/models/user_model.php";
- 		$model = new UserModel();
-		
 	
-   		View::make('movie-list.html', $model->all());
+   		View::make('movie-list.html', UserModel::all());
 	}
 	
 	
 	public static function login(){
 
 
-
 		$form = new \PFBC\Form("form-elements");
-
-		$form->configure(array(
-			"prevent" => array("bootstrap", "jQuery"), "action" => "./logincheck"
-		));
+		$form->configure(array("prevent" => array("bootstrap", "jQuery"), "action" => "./logincheck"));
 		$form->addElement(new \PFBC\Element\Textbox("Tunnus", "username", array("required" => 1)));
 		$form->addElement(new \PFBC\Element\Password("Salasana", "password", array("required" => 1)));
 		$form->addElement(new \PFBC\Element\Button);
-		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
-			"onclick" => "history.go(-1);"
-		)));
+		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array("onclick" => "history.go(-1);")));
 		
-
-		// Kint::dump(array('form' => $form->render($returnHTML = true)));
-
 		
-   		View::make('user-login.html', array('form' => $form->render($returnHTML = true)));
+   		View::make('form-layout.html', array('form' => $form->render($returnHTML = true), 'page_title' => 'Uusi elokuva'));
 
 		
 	}
 	public static function login_check(){
-		require_once "app/models/user_model.php";
-		$model = new UserModel();
-		$result = $model->find($_POST['username']);
+		
+		$result = UserModel::find($_POST['username']);
 
 		if (md5($result['created_at'].$_POST['password'])==$result['pw_hash']) {
 			$_SESSION['logged_in']=true;
