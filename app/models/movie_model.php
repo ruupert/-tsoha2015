@@ -12,17 +12,26 @@ class MovieModel extends BaseModel{
 		$this->conn = null;
 	}
 	
-	public static function all(){
- 		
+	public static function all($param){
    		$conn = DB::connection();
-		$query = $conn->prepare('SELECT id,name,description,duration FROM movie;');
+
+		switch ($param) {
+			case 'name':
+				$query = $conn->prepare('SELECT id, name FROM movie;');
+				break;
+			case 'allfields':
+				$query = $conn->prepare('SELECT id,name,description,duration FROM movie;');
+				break;
+		}
+		
 		$query->execute();
 		return array('movies' => $query->fetchAll());
 		
 	}
+
 	public static function find($id){
    		$conn = DB::connection();
-		$query = $conn->prepare("SELECT name,description,duration, encode(image::bytea,'base64') as image FROM movie where id=$id;");
+		$query = $conn->prepare("SELECT name,description, duration, encode(image::bytea,'base64') as image FROM movie where id=$id;");
 		$query->execute();
 		
 		return array('details' => $query->fetchAll());

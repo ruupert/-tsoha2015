@@ -2,11 +2,30 @@
 
 {% block content %}
   <div class="page-header">
-    <h1>Theaters</h1>
+    <h1>Teatterit</h1>
+    {% for link in links %}
+       <a href="{{link.url}}">{{link.name}}</a>
+    {% endfor %}
   </div>
+  <table>
+	  <tr>
+		  <th></th>
+		  <th>Nimi</th>
+		  <th>Kuvaus</th>
+		  <th>Istumapaikat</th>
+	  </tr>
+	  
+    {% for theater in theaters %}
+	  <tr class='clickable' data-href='theater/{{theater.id}}/show'>
+		  <td></td>
+		  <td>{{ theater.name }}</td>
+		  <td>{{ theater.description }}</td>
+		  <td>{{ theater.seats }}</td>
+	  </tr>
+  {% else %}
+  Ei leffoja :(
+  {% endfor %}
   
-{% endblock %}
 
-{% block table %}
   
 {% endblock %}

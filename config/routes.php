@@ -9,26 +9,28 @@ $routes->get('/movie',                     function()        {   MovieController
 $routes->get('/movie/new',                 function()        {   MovieController::add();                });
 $routes->get('/movie/:id/show',            function($id)     {   MovieController::show($id);            });
 $routes->get('/movie/:id/edit',            function($id)     {   MovieController::edit($id);            });
-$routes->post('/movie/:id/update',         function($id)     {   MovieController::update($id);          });
 $routes->get('/movie/sandbox',             function()        {   MovieController::sandbox();            });
 $routes->post('/movie/create',             function()        {   MovieController::create();             });
-$routes->get('/movie/:id/destroy',        function($id)     {   MovieController::destroy($id);         });
+$routes->post('/movie/:id/update',         function($id)     {   MovieController::update($id);          });
+$routes->post('/movie/:id/destroy',        function($id)     {   MovieController::destroy($id);         });
 // 
 // TheaterController
 $routes->get('/theater',                   function()        {   TheaterController::index();            });
 $routes->get('/theater/new',               function()        {   TheaterController::add();              });
 $routes->get('/theater/:id/show',          function($id)     {   TheaterController::show($id);          });
 $routes->get('/theater/:id/edit',          function($id)     {   TheaterController::edit($id);          });
-//$routes->post('/theater/:id/destroy')      function($id)     {   TheaterController::destroy($id);       });
-//$routes->post('/theater/create')           function($id)     {   TheaterController::create();           });
+$routes->post('/theater/create',           function()        {   TheaterController::create();           });
+$routes->post('/theater/:id/update',       function($id)     {   TheaterController::update($id);          });
+$routes->post('/theater/:id/destroy',      function($id)     {   TheaterController::destroy($id);       });
 //
 // TimetableController
 $routes->get('/timetable',                 function()        {   TimetableController::index();          });
 $routes->get('/timetable/new',             function()        {   TimetableController::add();            });
 $routes->get('/timetable/:id/show',        function($id)     {   TimetableController::show($id);        });
 $routes->get('/timetable/:id/edit',        function($id)     {   TimetableController::edit($id);        });
-//$routes->post('/timetable/:id/destroy')    function($id)     {   TimetableController::destroy($id);     });
-//$routes->post('/timetable/create')         function($id)     {   TimetableController::create();         });
+$routes->post('/timetable/:id/destroy',    function($id)     {   TimetableController::destroy($id);     });
+$routes->post('/timetable/:id/update',     function($id)     {   TimetableController::update($id);      });
+$routes->post('/timetable/create',         function()        {   TimetableController::create();         });
 //
 // UserController
 $routes->get('/user',                      function()        {   UserController::index();              });

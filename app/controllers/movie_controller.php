@@ -2,9 +2,10 @@
 
 class MovieController extends BaseController{
 
+	
 	public static function index(){
 		
-		View::make('movie-list.html', array_merge(MovieModel::all(), array('links' => parent::addnew_link())));
+		View::make('movie-list.html', array_merge(MovieModel::all('allfields'), array('links' => parent::addnew_link('movie'))));
 		
 	}
 	
@@ -83,6 +84,7 @@ class MovieController extends BaseController{
 			$obj = new MovieModel();
 			$obj->save($id,$_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
 			header('Location: ' . $_SERVER['HTTP_REFERER']);
+			Redirect::to("/movie/$id/show");
 
 		} else {
 
@@ -104,8 +106,6 @@ class MovieController extends BaseController{
 	public static function sandbox(){
 		// Testaa koodiasi täällä
 
-		require_once "app/models/movie_model.php";
- 		$model = new MovieModel();
 		
 		
 		

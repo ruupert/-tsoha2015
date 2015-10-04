@@ -46,12 +46,12 @@
 		  }
 		  
 	  }
-	  public static function addnew_link() {
+	  public static function addnew_link($controller) {
   		  if (self::is_admin()==true) {
 
 			  // pitaa kattoa miten naita urleja oikein saa parent::urlFor('/movie/new')
 			  // eli paskasti nyt staattista:
-			  return array('link' => array('url' => BASE_PATH . '/movie/new' , 'name' => 'Uusi'));
+			  return array('link' => array('url' => BASE_PATH . '/' . $controller . '/new' , 'name' => 'Uusi'));
 		  }
 	  }	  
   }

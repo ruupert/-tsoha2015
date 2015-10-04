@@ -2,7 +2,30 @@
 
 {% block content %}
   <div class="page-header">
-    <h1>Listing.. </h1>
+    <h1>Elokuvat</h1>
+    {% for link in links %}
+       <a href="{{link.url}}">{{link.name}}</a>
+    {% endfor %}
   </div>
+  <table>
+	  <tr>
+		  <th></th>
+		  <th>Nimi</th>
+		  <th>Kuvaus</th>
+		  <th>Kesto (min)</th>
+	  </tr>
+	  
+    {% for movie in movies %}
+	  <tr class='clickable' data-href='movie/{{movie.id}}/show'>
+		  <td></td>
+		  <td>{{ movie.name }}</td>
+		  <td>{{ movie.description }}</td>
+		  <td>{{ movie.duration }}</td>
+	  </tr>
+  {% else %}
+  Ei leffoja :(
+  {% endfor %}
+  
 
+  
 {% endblock %}
