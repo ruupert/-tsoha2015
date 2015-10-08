@@ -118,7 +118,7 @@ CREATE TABLE users (
     name text NOT NULL,
     lastname text NOT NULL,
     login_hash text NOT NULL,
-    logged_in timestamp without timezone NOT NULL
+    logged_in boolean DEFAULT true
 );
 
 CREATE SEQUENCE user_id_seq

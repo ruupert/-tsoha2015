@@ -26,6 +26,10 @@ class UserController extends BaseController{
 		
 	}
 	public static function login_check(){
+
+		// juuh elikkäs...
+		
+		
 		
 		$result = UserModel::find($_POST['username'], $_SESSION['login_hash']);
 

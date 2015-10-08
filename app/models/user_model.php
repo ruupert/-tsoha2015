@@ -15,7 +15,7 @@ class UserModel extends BaseModel{
  		
 		
 	}
-	public static function find($id, $login_hash){
+	public static function find($id){
 		
 		$conn = DB::connection();
 		$query = $conn->prepare("SELECT admin,created_at,username,pw_hash FROM users where username='$id';");
@@ -23,6 +23,7 @@ class UserModel extends BaseModel{
 		
 		return $query->fetch();
 	}
+
 	private function get($id){
 		
 	}
