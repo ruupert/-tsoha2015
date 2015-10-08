@@ -27,7 +27,7 @@ class UserController extends BaseController{
 	}
 	public static function login_check(){
 		
-		$result = UserModel::find($_POST['username']);
+		$result = UserModel::find($_POST['username'], $_SESSION['login_hash']);
 
 		if (md5($result['created_at'].$_POST['password'])==$result['pw_hash']) {
 			$_SESSION['logged_in']=json_encode(true);
