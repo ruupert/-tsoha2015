@@ -37,7 +37,7 @@ CREATE TABLE movie (
     modified_at timestamp without time zone NOT NULL,
     name text NOT NULL,
     description text NOT NULL,
-    image bytea,
+    image bytea DEFAULT NULL,
     duration integer NOT NULL
 );
 
@@ -74,7 +74,7 @@ CREATE TABLE theater (
     modified_at timestamp without time zone NOT NULL,
     name text NOT NULL,
     description text NOT NULL,
-    image bytea,
+    image bytea DEFAULT NULL,
     seats integer NOT NULL
 );
 
@@ -116,7 +116,9 @@ CREATE TABLE users (
     username text UNIQUE NOT NULL,
     pw_hash text NOT NULL,
     name text NOT NULL,
-    lastname text NOT NULL
+    lastname text NOT NULL,
+    login_hash text NOT NULL,
+    logged_in timestamp without timezone NOT NULL
 );
 
 CREATE SEQUENCE user_id_seq
