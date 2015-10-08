@@ -39,6 +39,12 @@ class UserController extends BaseController{
 			if ($result['admin'] == json_encode(true)) {
 				// vain linkkien nakyvyytta varten. toimintojen yhteydessa tarkistus tehdaan kuitenkin erikseen.
 				$_SESSION['admin_user']=json_encode(true);
+				$login_hash = md5(time() . $result['username']);
+
+				UserModel::set_logged_in($login_hash);
+				
+				$_SESSION['login_hash'] = $login_hash;
+				
 			}
  			// laitetaan formin sivulla keksiin referrer ja ohjataan kayttaja takas mista alunperin lahti.	
 			// testiksi johonkin polkuun.
