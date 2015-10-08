@@ -34,10 +34,11 @@ class TimetableModel extends BaseModel{
 		return array('details' => $query->fetchAll());
 	}
 	
-	function save($id, $movie, $theater, $start_at){
+	public static function save($id, $movie, $theater, $start_at){
 
- 		if ($this->validate_timetable($movie,$theater,$start_at) == true){
-			echo "success";
+ 		if (self::validate_timetable($movie,$theater,$start_at) == true){
+			
+			$_SESSION['flash_message'] = json_encode('valid');
 			
 			try {
 				$query = $this->conn->prepare("UPDATE timetable SET name=:name, description=:description, duration=:duration, image=:img_data WHERE id=:id");
@@ -70,13 +71,12 @@ class TimetableModel extends BaseModel{
 		
 		
 	}
-	function add($movie,$theater,$start_at){
- 		if ($this->validate_timetable($movie,$theater,$start_at) == true){
-			$_SESSION['flash_message'] = json_encode("Validoituu");
-
+	public static function add($movie,$theater,$start_at){
+ 		if (self::validate_timetable($movie,$theater,$start_at) == true){
+			error();
    			$conn = DB::connection();
 			
-			$query = $this->conn->prepare("INSERT INTO timetable ($movie,$theater,$start_at,$end_at) VALUES (:name, :description, :duration, null)");
+			$query = $this->conn->prepare("INSERT INTO timetable (movie_id,theater_id,start_at,end_at) VALUES (:name, :description, :duration, null)");
 			$query->bindParam(':name', $name);
 			$query->bindParam(':description', $description);
 			$query->bindParam(':duration', $duration);
@@ -93,7 +93,7 @@ class TimetableModel extends BaseModel{
 		
 	}
 
-	private function validate_timetable($movie_id, $theater_id, $start_at) {
+	public static function validate_timetable($movie_id, $theater_id, $start_at) {
 		
 		try {
 			$start_at = new DateTime($start_at);
@@ -103,55 +103,54 @@ class TimetableModel extends BaseModel{
 			
 			$query = $conn->prepare("SELECT id FROM theater");
 			$query->execute();
-			$theaters = $query->fetchAll();
+			$theaters = $query->fetch(PDO::FETCH_NUM);
 			
 			if (in_array($theater_id, $theaters)) {
 				
 				
-				
-				$query = $conn->prepare("SELECT id, duration FROM movie");
+
+				$query = $conn->prepare("SELECT id from movie");
 				$query->execute();
-				$movies = $query->fetchAll();
+				$movies = $query->fetch(PDO::FETCH_NUM);
 				
 				if (in_array($movie_id,$movies)) {
+					$query = $conn->prepare("SELECT duration from movie where id=$movie_id");
+					$query->execute();
+
+					$duration_sec = $query->fetch(PDO::FETCH_ASSOC);
+					$duration_sec = $duration_sec[0]['duration'] * 60;
+					
 					$movie = $movies[array_search($movie_id,$movies)];
-					$duration_sec = $movie['duration'];
+
 					date_add($end_at, new DateInterval("PT".$duration_sec."S"));
-					
-					
-					
-					$query = $conn->prepare("SELECT id FROM timetable where theater_id=':theater_id' 
-                                                                                           AND start_at BETWEEN :start_at AND :end_at 
-                                                                                            AND end_at BETWEEN :start_at AND :end_at");
-					$query->bindParam(':theater_id', $theater_id);
-					$query->bindParam(':start_at', $start_at);
-					$query->bindParam(':end_at', $end_at);
+
+						
+					$query = $conn->prepare("SELECT id FROM timetable where theater_id=$theater_id 
+                                                                                           AND start_at BETWEEN $start_at AND $end_at 
+                                                                                            AND end_at BETWEEN $start_at AND $end_at");
 					
 					$query->execute();
 					$overlapping_timetables = $query->fetchAll();
 
-					var_dump($overlapping_timetables);
-
+					
+		
 					return true;
 					
 					
 					
 				
-				}
+				} else {return false;}
 				
 				
-			}
+			} else  { return false;} 
 		
 		} catch (Exception $e) {
-			$_SESSION['flash_message'] = json_encode("Ei onnistu");
 
-			var_dump($e);
 			// ei onnistu
 			return false;
 		}
 			
 			
-		return false;
 		
 
 
@@ -166,7 +165,8 @@ class TimetableModel extends BaseModel{
 	}
 	
 	function remove($id){
-		$query = $this->conn->prepare("DELETE FROM timetable WHERE id=:id");
+		$conn = DB::connection();
+		$query = $conn->prepare("DELETE FROM timetable WHERE id=:id");
 		$query->bindParam(':id', $id);
 		$query->execute();
 		return true;

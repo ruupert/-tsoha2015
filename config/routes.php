@@ -12,7 +12,7 @@ $routes->get('/movie/:id/edit',            function($id)     {   MovieController
 $routes->get('/movie/sandbox',             function()        {   MovieController::sandbox();            });
 $routes->post('/movie/create',             function()        {   MovieController::create();             });
 $routes->post('/movie/:id/update',         function($id)     {   MovieController::update($id);          });
-$routes->post('/movie/:id/destroy',        function($id)     {   MovieController::destroy($id);         });
+$routes->get('/movie/:id/destroy',        function($id)     {   MovieController::destroy($id);         });
 // 
 // TheaterController
 $routes->get('/theater',                   function()        {   TheaterController::index();            });
@@ -21,16 +21,17 @@ $routes->get('/theater/:id/show',          function($id)     {   TheaterControll
 $routes->get('/theater/:id/edit',          function($id)     {   TheaterController::edit($id);          });
 $routes->post('/theater/create',           function()        {   TheaterController::create();           });
 $routes->post('/theater/:id/update',       function($id)     {   TheaterController::update($id);          });
-$routes->post('/theater/:id/destroy',      function($id)     {   TheaterController::destroy($id);       });
+$routes->get('/theater/:id/destroy',      function($id)     {   TheaterController::destroy($id);       });
 //
 // TimetableController
 $routes->get('/timetable',                 function()        {   TimetableController::index();          });
 $routes->get('/timetable/new',             function()        {   TimetableController::add();            });
 $routes->get('/timetable/:id/show',        function($id)     {   TimetableController::show($id);        });
 $routes->get('/timetable/:id/edit',        function($id)     {   TimetableController::edit($id);        });
-$routes->post('/timetable/:id/destroy',    function($id)     {   TimetableController::destroy($id);     });
+$routes->get('/timetable/:id/destroy',    function($id)     {   TimetableController::destroy($id);     });
 $routes->post('/timetable/:id/update',     function($id)     {   TimetableController::update($id);      });
 $routes->post('/timetable/create',         function()        {   TimetableController::create();         });
+$routes->get('/timetable/sandbox',         function()        { TimetableController::sandbox();          });
 //
 // UserController
 $routes->get('/user',                      function()        {   UserController::index();              });

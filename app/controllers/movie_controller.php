@@ -18,50 +18,52 @@ class MovieController extends BaseController{
 	}	  
 	
 	public static function edit($id){
-		$result = MovieModel::find($id);
-		$result = $result['details'][0];
-
-
-		
-		
-		$form = new \PFBC\Form("form-elements");
-
-		$form->configure(array(
-			"prevent" => array("bootstrap", "jQuery"), "action" => "./update"
-		));
-		$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1, "value" => $result['name'])));
-		$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1, "value" => $result['description'])));
-		$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1, "value" => $result['duration'])));
-		$form->addElement(new \PFBC\Element\HTML("<img src='data:image/png;base64," . $result['image'] . "'/>"));
-		$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
-		$form->addElement(new \PFBC\Element\Button);
-		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
-			"onclick" => "history.go(-1);"
-		)));
-		
-		
-   		View::make('form-layout.html', array('form' => $form->render($returnHTML = true)));
-		
+		if (parent::is_admin()==true) {
+			$result = MovieModel::find($id);
+			$result = $result['details'][0];
+			
+			
+			
+			
+			$form = new \PFBC\Form("form-elements");
+			
+			$form->configure(array(
+				"prevent" => array("bootstrap", "jQuery"), "action" => "./update"
+			));
+			$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1, "value" => $result['name'])));
+			$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1, "value" => $result['description'])));
+			$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1, "value" => $result['duration'])));
+			$form->addElement(new \PFBC\Element\HTML("<img src='data:image/png;base64," . $result['image'] . "'/>"));
+			$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
+			$form->addElement(new \PFBC\Element\Button);
+			$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
+				"onclick" => "history.go(-1);"
+			)));
+			
+			
+   			View::make('form-layout.html', array('form' => $form->render($returnHTML = true)));
+		}
 	}
 	public static function add(){
-		$form_action = BASE_PATH . "/movie/create";
-		
-		$form = new \PFBC\Form("form-elements");
-
-		$form->configure(array(
+		if (parent::is_admin()==true) {
+			$form_action = BASE_PATH . "/movie/create";
+			
+			$form = new \PFBC\Form("form-elements");
+			
+			$form->configure(array(
 			"prevent" => array("bootstrap", "jQuery"), "action" => $form_action, "method" => "post"
-		));
-
-		$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1)));
-		$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1)));
-		$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1)));
-		$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
-		$form->addElement(new \PFBC\Element\Button);
-		$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
-			"onclick" => "history.go(-1);"
-		)));
-   		View::make('form-layout.html', array('form' => $form->render($returnHTML = true), 'page_title' => 'Uusi elokuva'));
-		
+			));
+			
+			$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1)));
+			$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1)));
+			$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1)));
+			$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
+			$form->addElement(new \PFBC\Element\Button);
+			$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
+				"onclick" => "history.go(-1);"
+			)));
+   			View::make('form-layout.html', array('form' => $form->render($returnHTML = true), 'page_title' => 'Uusi elokuva'));
+		}
 	}
 	
 	public static function create(){
@@ -93,14 +95,11 @@ class MovieController extends BaseController{
 	}
 	public static function destroy($id){
 		if (parent::is_admin()==true) {
-			$obj = new MovieModel();
-			$obj->remove($id);
-			Redirect::to('/movie');
-
-		} else {
-			Redirect::to('/movie');
-
-		}
+			
+			MovieModel::remove($id);
+			
+		} 
+		Redirect::to('/movie');
 	}
 	
 	public static function sandbox(){

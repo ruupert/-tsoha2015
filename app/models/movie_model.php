@@ -176,9 +176,9 @@ class MovieModel extends BaseModel{
 		return DB::connection();
 	}
 	
-	function remove($id){
-		$query = $this->conn->prepare("DELETE FROM movie WHERE id=:id");
-		$query->bindParam(':id', $id);
+	public static function remove($id){
+		$conn = DB::connection();
+		$query = $conn->prepare("DELETE FROM movie WHERE id=$id");
 		$query->execute();
 		return true;
 	}
