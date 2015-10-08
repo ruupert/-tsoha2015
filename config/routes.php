@@ -38,6 +38,7 @@ $routes->get('/login',                     function()        {   UserController:
 $routes->post('/logincheck',               function()        {   UserController::login_check();        });
 $routes->get('/logout',                    function()        {   UserController::logout();             });
 $routes->get('/register',                  function()        {   UserController::register();           });
+$routes->get('/user/sandbox',              function()        {   UserController::sandbox();           });
 //
 // ReservationController
 $routes->get('/reservation',               function()        {   ReservationController::index();        });

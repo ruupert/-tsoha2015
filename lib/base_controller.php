@@ -12,10 +12,17 @@
 	  }
 	  
 	  public static function check_logged_in(){
-		  if (!(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] != '')) {
+//		  if (!(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] != '' && !isset($_SESSION['login_hash']))) {
+		  if (!isset($_SESSION['login_hash'])) {
 			  return false;
 		  } else {
-			  return true;
+			  $user = UserModel::find($_SESSION['username']);
+			  if ($user['login_hash']==$_SESSION['login_hash']) {
+			  
+				  return true;
+			  } else {
+				  false;
+			  }
 		  }
 	  }
 	  public static function is_admin(){

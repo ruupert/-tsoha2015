@@ -117,7 +117,7 @@ CREATE TABLE users (
     pw_hash text NOT NULL,
     name text NOT NULL,
     lastname text NOT NULL,
-    login_hash text NOT NULL
+    login_hash text DEFAULT NULL
 );
 
 CREATE SEQUENCE user_id_seq

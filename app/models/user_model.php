@@ -24,14 +24,13 @@ class UserModel extends BaseModel{
 		return $query->fetch();
 	}
 	
-        private static function set_login($username, $login_hash) {
+        public static function set_login($username, $login_hash) {
 
 		$conn = DB::connection();
-		$query = $conn->prepare("UPDATE user SET login_hash=':login_hash' where username=':username'");
-		$query->bindParam(':login_hash',$login_hash);
-		$query->bindParam('$username',$username');
+		$query = $conn->prepare("UPDATE users SET login_hash='$login_hash' where username='$username'");
 		$query->execute();
-
+		
+		
 	}
 
 	public static function unset_login($username) {
@@ -41,10 +40,16 @@ class UserModel extends BaseModel{
 
 	public static function check_credentials($username, $password, $login_hash) {
 
-		$user = $this->find($username);
-		
-		if (md5($username . $password)==$user['pw_hash']) {
-			$this->set_login($username, $login_hash);
+		$user = UserModel::find($username);
+
+			
+		if (md5($user['created_at'] . $password)==$user['pw_hash']) {
+			UserModel::set_login($username, $login_hash);
+			$_SESSION['username']=$username;
+			$_SESSION['login_hash']=$login_hash;
+			if ($user['admin']=true) {
+				$_SESSION['admin_user']=true;
+			}
 			return true;
 		} else {
 			return false;

@@ -11,10 +11,17 @@ class UserController extends BaseController{
 	
 	public static function login(){
 
-		$_SESSION['login_referer']=$_SERVER['HTTP_REFERER'];
+		$form_path = BASE_PATH . "/logincheck";
+
+		if (!isset($_SERVER['HTTP_REFERER'])) {
+			$_SESSION['login_referer'] = '/';
+		} else {
+
+			$_SESSION['login_referer'] = $_SERVER['HTTP_REFERER'];
+		}
 
 		$form = new \PFBC\Form("form-elements");
-		$form->configure(array("prevent" => array("bootstrap", "jQuery"), "action" => "./logincheck"));
+		$form->configure(array("prevent" => array("bootstrap", "jQuery"), "action" => $form_path, "method" => "post"));
 		$form->addElement(new \PFBC\Element\Textbox("Tunnus", "username", array("required" => 1)));
 		$form->addElement(new \PFBC\Element\Password("Salasana", "password", array("required" => 1)));
 		$form->addElement(new \PFBC\Element\Button);
@@ -27,18 +34,19 @@ class UserController extends BaseController{
 	}
 	
 	public static function login_check(){
-
-                $login_hash = md5(time() . $result['username']);
-
-		if (UserModel::check_credentials($_POST['username'], $_POST['password'],$login_hash) == true) {
-			header('Location: ' . $_SESSION['login_referer']);
- 			$_SESSION['login_hash'] = $login_hash;
-
-		}  else {
-			header('Location: ' . BASE_PATH . '/login');
-
-		}
 		
+                $login_hash = md5(time() . $_POST['username']);
+		$result = UserModel::check_credentials($_POST['username'], $_POST['password'],$login_hash);
+		if ($result == true) {
+ 			$_SESSION['login_hash'] = $login_hash;
+			header('Location: ' . $_SESSION['login_referer']);
+			
+		}  else {
+			$_SESSION['login_hash'] = null;
+			header('Location: /login');
+			
+		}
+	
 		
 	}
 	
@@ -49,10 +57,11 @@ class UserController extends BaseController{
 		$_SESSION['logged_in']=json_encode(false);
 		$_SESSION['username']=null;
 
-		
 		header('Location: ' . BASE_PATH);
 		
+		
 	}
+
 	public static function register(){
    		View::make('form-layout.html');
 		
@@ -70,13 +79,11 @@ class UserController extends BaseController{
 	
 	public static function sandbox(){
 		// Testaa koodiasi täällä
-
-		require_once "app/models/movie_model.php";
- 		$model = new MovieModel();
-		Kint::dump($model);
+		$_POST['username']='admin';
+		$_POST['password']='admin1';
+		echo self::login_check();
 		
-#		View::make('movie-list.html', MovieModel::all());
-		
+	
 		
 	}
 }
