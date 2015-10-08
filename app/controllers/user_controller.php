@@ -25,41 +25,31 @@ class UserController extends BaseController{
 
 		
 	}
+	
 	public static function login_check(){
 
-		// juuh elikkäs...
-		
-		
-		
-		$result = UserModel::find($_POST['username'], $_SESSION['login_hash']);
+                $login_hash = md5(time() . $result['username']);
 
-		if (md5($result['created_at'].$_POST['password'])==$result['pw_hash']) {
-			$_SESSION['logged_in']=json_encode(true);
-			$_SESSION['username']=json_encode($result['username']);
-			if ($result['admin'] == json_encode(true)) {
-				// vain linkkien nakyvyytta varten. toimintojen yhteydessa tarkistus tehdaan kuitenkin erikseen.
-				$_SESSION['admin_user']=json_encode(true);
-				$login_hash = md5(time() . $result['username']);
+		if (UserModel::check_credentials($_POST['username'], $_POST['password'],$login_hash) == true) {
+			header('Location: ' . $_SESSION['login_referer']);
+ 			$_SESSION['login_hash'] = $login_hash;
 
-				UserModel::set_logged_in($login_hash);
-				
-				$_SESSION['login_hash'] = $login_hash;
-				
-			}
- 			// laitetaan formin sivulla keksiin referrer ja ohjataan kayttaja takas mista alunperin lahti.	
-			// testiksi johonkin polkuun.
-			
- 			header('Location: ' . $_SESSION['login_referer']);
-				
-		} else {
- 			header('Location: ' . BASE_PATH . '/login');
+		}  else {
+			header('Location: ' . BASE_PATH . '/login');
+
 		}
+		
+		
+	}
 	
-       }
+	
 	public static function logout(){
+	// logout ottaa jatkossa $username:n argumenttina ja tarkistaa, että onko kirjautunut ennen toimintaa.	
 		$_SESSION['admin_user']=null;
 		$_SESSION['logged_in']=json_encode(false);
 		$_SESSION['username']=null;
+
+		
 		header('Location: ' . BASE_PATH);
 		
 	}

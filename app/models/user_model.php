@@ -18,20 +18,37 @@ class UserModel extends BaseModel{
 	public static function find($id){
 		
 		$conn = DB::connection();
-		$query = $conn->prepare("SELECT admin,created_at,username,pw_hash,login_hash,logged_in FROM users where username='$id';");
+		$query = $conn->prepare("SELECT admin,created_at,username,pw_hash,login_hash FROM users where username='$id';");
 		$query->execute();
 		
 		return $query->fetch();
 	}
+	
+        private static function set_login($username, $login_hash) {
 
-	private function get($id){
-		
+		$conn = DB::connection();
+		$query = $conn->prepare("UPDATE user SET login_hash=':login_hash' where username=':username'");
+		$query->bindParam(':login_hash',$login_hash);
+		$query->bindParam('$username',$username');
+		$query->execute();
+
 	}
-	private function save($id){
-		
+
+	public static function unset_login($username) {
+		$this->set_loggin($username, md5(time() . "aGSDFGSDFG324TK4LRK6GS2DFk32flsd" . $username . "fsdlk32kfdslk214"));
+
 	}
-	private function add(){
+
+	public static function check_credentials($username, $password, $login_hash) {
+
+		$user = $this->find($username);
 		
+		if (md5($username . $password)==$user['pw_hash']) {
+			$this->set_login($username, $login_hash);
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	private function remove($id){
