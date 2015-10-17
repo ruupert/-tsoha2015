@@ -123,6 +123,9 @@ class MovieModel extends BaseModel{
 	private function validate_duration($duration) {
 		if (is_numeric($duration)) {
 			if ($duration > 0) {
+
+				
+				
 				return true;
 			} else {
 				$this->errors += "Elokuva on liian lyhyt... ";

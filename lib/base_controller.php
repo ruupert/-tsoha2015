@@ -28,7 +28,12 @@
 		  if (self::check_logged_in()==true) {
 			  if (isset($_SESSION['admin_user'])) {
 				  if ($_SESSION['admin_user']==true) {
-					  return true;
+					  $user = UserModel::find($_SESSION['username']);
+					  if ($user['admin']==true) {
+						  return true;
+					  } else {
+						  return false;
+					  }
 				  } else {
 					  return false;
 				  }
