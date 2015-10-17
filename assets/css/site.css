@@ -1,3 +1,4 @@
+
 #main-container{
   max-width: 1200px;
   padding: 10px 25px;
@@ -15,4 +16,8 @@ tr.clickable:hover {
 
 td {
     padding-right:15px;
+}
+p#creditos {
+    padding-top: 30px;
+    padding-left: 20px;
 }
