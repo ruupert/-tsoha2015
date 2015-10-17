@@ -3,8 +3,11 @@
   class BaseController{
 	  
 	  public static function get_user_logged_in(){
-		  if (isset($_SESSION['username'])) {
-			  return $_SESSION['username'];
+		  if (isset($_SESSION['login_hash']) && isset($_SESSION['username'])) {
+			  $user = UserModel::find($_SESSION['username']);
+			  if ($user['login_hash']==$_SESSION['login_hash']) {
+				  return $user['username'];
+			  } else { return null;}
 		  } else {
 			  return null;
 		  }
@@ -73,7 +76,7 @@
 
 			  // pitaa kattoa miten naita urleja oikein saa parent::urlFor('/movie/new')
 			  // eli paskasti nyt staattista:
-			  return array('link' => array('url' => BASE_PATH . '/' . $timetable_id . '/reservation' , 'name' => 'Varaa'));
+			  return array('link' => array('url' => BASE_PATH . '/timetable/' . $timetable_id . '/reservation' , 'name' => 'Varaa'));
 		  } else {
 			  // HYI
   			  return array('nolink' => array('url' => '', 'name' => ''));

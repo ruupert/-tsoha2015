@@ -49,6 +49,6 @@ $routes->get('/timetable/:id/reservation', function($id)     {   ReservationCont
 $routes->get('/reservation/:id/show',      function($id)     {   ReservationController::show($id);      });
 $routes->get('/reservation/:id/edit',      function($id)     {   ReservationController::edit($id);      });
 $routes->post('/reservation/:id/destroy',  function($id)     {   ReservationController::destroy($id);   });
-//$routes->post('/reservation/create')       function($id)     {   ReservationController::create();       });
+$routes->post('/reservation/create',       function()     {   ReservationController::create();       });
 
 
