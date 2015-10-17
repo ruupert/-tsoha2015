@@ -1,0 +1,101 @@
+<?php
+
+class UserController extends BaseController{
+
+	
+	public static function index(){
+
+		require_once "app/models/user_model.php";
+ 		$model = new UserModel();
+		
+		
+   		View::make('movie-list.html', $model->all());
+	}
+	
+	
+	public static function login(){
+
+		$options = array("Option #1", "Option #2", "Option #3");
+		
+		$form = new \PFBC\Form("form-elements");
+		$form->configure(array(
+			"prevent" => array("bootstrap", "jQuery")
+		));
+		$form->addElement(new \PFBC\Element\Hidden("form", "form-elements"));
+		$form->addElement(new \PFBC\Element\HTML('<legend>Standard</legend>'));
+		$form->addElement(new \PFBC\Element\Textbox("Textbox:", "Textbox"));
+		$form->addElement(new \PFBC\Element\Password("Password:", "Password"));
+		$form->addElement(new \PFBC\Element\File("File:", "File"));
+		$form->addElement(new \PFBC\Element\Textarea("Textarea:", "Textarea"));
+		$form->addElement(new \PFBC\Element\Select("Select:", "Select", $options));
+		$form->addElement(new \PFBC\Element\Radio("Radio Buttons:", "RadioButtons", $options));
+		$form->addElement(new \PFBC\Element\Checkbox("Checkboxes:", "Checkboxes", $options));
+		$form->addElement(new \PFBC\Element\HTML('<legend>HTML5</legend>'));
+		$form->addElement(new \PFBC\Element\Phone("Phone:", "Phone"));
+		$form->addElement(new \PFBC\Element\Search("Search:", "Search"));
+		$form->addElement(new \PFBC\Element\Url("Url:", "Url"));
+		$form->addElement(new \PFBC\Element\Email("Email:", "Email"));
+		$form->addElement(new \PFBC\Element\Date("Date:", "Date"));
+		$form->addElement(new \PFBC\Element\DateTime("DateTime:", "DateTime"));
+		$form->addElement(new \PFBC\Element\DateTimeLocal("DateTime-Local:", "DateTimeLocal"));
+		$form->addElement(new \PFBC\Element\Month("Month:", "Month"));
+		$form->addElement(new \PFBC\Element\Week("Week:", "Week"));
+		$form->addElement(new \PFBC\Element\Time("Time:", "Time"));
+		$form->addElement(new \PFBC\Element\Number("Number:", "Number"));
+		$form->addElement(new \PFBC\Element\Range("Range:", "Range"));
+		$form->addElement(new \PFBC\Element\Color("Color:", "Color"));
+		$form->addElement(new \PFBC\Element\HTML('<legend>jQuery UI</legend>'));
+		$form->addElement(new \PFBC\Element\jQueryUIDate("Date:", "jQueryUIDate"));
+		$form->addElement(new \PFBC\Element\Checksort("Checksort:", "Checksort", $options));
+		$form->addElement(new \PFBC\Element\Sort("Sort:", "Sort", $options));
+		$form->addElement(new \PFBC\Element\HTML('<legend>WYSIWYG Editor</legend>'));
+		$form->addElement(new \PFBC\Element\TinyMCE("TinyMCE:", "TinyMCE"));
+		$form->addElement(new \PFBC\Element\CKEditor("CKEditor:", "CKEditor"));
+		$form->addElement(new \PFBC\Element\HTML('<legend>Custom/Other</legend>'));
+		$form->addElement(new \PFBC\Element\State("State:", "State"));
+		$form->addElement(new \PFBC\Element\Country("Country:", "Country"));
+		$form->addElement(new \PFBC\Element\YesNo("Yes/No:", "YesNo"));
+		$form->addElement(new \PFBC\Element\Captcha("Captcha:"));
+		$form->addElement(new \PFBC\Element\Button);
+		$form->addElement(new \PFBC\Element\Button("Cancel", "button", array(
+			"onclick" => "history.go(-1);"
+		)));
+		
+
+		Kint::dump(array('form' => $form->render($returnHTML = true)));
+
+		
+   		View::make('user-login.html', array('form' => $form->render($returnHTML = true)));
+		
+	}
+	public static function logout(){
+   		View::make('user-logout.html');
+		
+	}
+	public static function register(){
+   		View::make('user-register.html');
+		
+	}
+	
+	public static function create(){
+
+	}
+	public static function update(){
+		
+	}
+	public static function destroy(){
+		
+	}
+	
+	public static function sandbox(){
+		// Testaa koodiasi täällä
+
+		require_once "app/models/movie_model.php";
+ 		$model = new MovieModel();
+		Kint::dump($model);
+		
+#		View::make('movie-list.html', MovieModel::all());
+		
+		
+	}
+}
