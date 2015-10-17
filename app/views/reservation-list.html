@@ -2,7 +2,30 @@
 
 {% block content %}
   <div class="page-header">
-    <h1>Listing.. </h1>
+    <h1>Naytokset</h1>
+    {% for link in links %}
+       <a href="{{link.url}}">{{link.name}}</a>
+    {% endfor %}
   </div>
+  <table>
+	  <tr>
+		  <th>Elokuva</th>
+		  <th>Teatteri</th>
+ 		  <th>Alkaa</th>
+		  <th>Loppuu</th>
+	  </tr>
+	  
+    {% for reservation in reservations %}
+	  <tr class='clickable' data-href='reservation/{{reservation.id}}/show'>
+		  <td>{{ reservation.timetable_id }}</td>
+		  <td>{{ reservation.quantity }}</td>
+		  <td>{{ reservation.start_at }}</td>
+		  <td>{{ reservation.end_at }}</td>
+	  </tr>
+  {% else %}
+  Ei naytoksia :(
+  {% endfor %}
+  
 
+  
 {% endblock %}

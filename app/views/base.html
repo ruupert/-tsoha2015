@@ -49,6 +49,10 @@
 	    <li><a href="{{base_path}}/movie">Elokuvat</a></li>
             <li><a href="{{base_path}}/theater">Teatterit</a></li>
             <li><a href="{{base_path}}/timetable">Naytökset</a></li>
+	    {% if user_logged_in != null %}
+	      <li><a href="{{base_path}}/reservation">Varaukset</a></li>
+	    {% endif %}
+
           </ul>
         </div>
       </div>

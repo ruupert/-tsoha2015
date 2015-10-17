@@ -13,6 +13,14 @@
 		  }
 		  
 	  }
+
+	  public static function get_user_id($user){
+		  
+		  $user = UserModel::find($_SESSION['username']);
+		  return $user['id'];
+			
+		  
+	  }
 	  
 	  public static function check_logged_in(){
 		  if (!isset($_SESSION['login_hash'])) {
