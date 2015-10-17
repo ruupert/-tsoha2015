@@ -72,20 +72,44 @@ class TimetableModel extends BaseModel{
 		
 	}
 	public static function add($movie,$theater,$start_at){
+		$log_file = '/home/users/ruupert/sites/ruupert.kapsi.fi/www/tsoha2015/log/timetable.log';
  		if (self::validate_timetable($movie,$theater,$start_at) == true){
-			error();
+
    			$conn = DB::connection();
+
+			system("echo 'valid timetable.. continuing' >> $log_file");
 			
-			$query = $this->conn->prepare("INSERT INTO timetable (movie_id,theater_id,start_at,end_at) VALUES (:name, :description, :duration, null)");
-			$query->bindParam(':name', $name);
-			$query->bindParam(':description', $description);
-			$query->bindParam(':duration', $duration);
+			$query = $conn->prepare("SELECT duration from movie where id=:movie_id");
+			$query->bindParam(':movie_id', $movie);
+			$query->execute();
+			
+			
+			$duration_sec = $query->fetch(PDO::FETCH_ASSOC);
+			$duration_sec = $duration_sec['duration'];
+			$duration_sec = $duration_sec * 60;
+			system("echo 'duration_sec: $duration_sec'  >> $log_file");
+
+			$end_at = new DateTime($start_at);
+			$start_at = new DateTime($start_at);
+			$end_at->add(new DateInterval("PT".$duration_sec."S"));
+			$end_at = $end_at->format("d.m.Y H:i");
+			$start_at = $start_at->format("d.m.Y H:i");
+			
+
+			system("echo 'add variables values: $movie, $theater, $start_at, $end_at' >> $log_file");
+			
+			$query = $conn->prepare("INSERT INTO timetable (movie_id,theater_id,start_at,end_at) VALUES (:movie_id, :theater_id, :start_at, :end_at)");
+			$query->bindParam(':movie_id', $movie);
+			$query->bindParam(':theater_id', $theater);
+			$query->bindParam(':start_at', $start_at);
+			$query->bindParam(':end_at', $end_at);
 			$query->execute();
 			
 			
 			
 			return true;
 		} else {
+			system("echo 'fakdap' >> $log_file");
 			// ja tässä laitettais se errorrr message... ehkä.
 			return false;
 		}
@@ -94,70 +118,78 @@ class TimetableModel extends BaseModel{
 	}
 
 	public static function validate_timetable($movie_id, $theater_id, $start_at) {
+		$log_file = '/home/users/ruupert/sites/ruupert.kapsi.fi/www/tsoha2015/log/timetable.log';
+		system("echo '`date` entering validate_timetable with variables values: $movie_id, $theater_id, $start_at' >> $log_file");
+		$end_at = new DateTime($start_at);
+		$start_at = new DateTime($start_at);
 		
-		try {
-			$start_at = new DateTime($start_at);
-			$end_at = $start_at;
+		$conn = DB::connection();
+		
+		$query = $conn->prepare("SELECT id FROM theater");
+		$query->execute();
+		$theaters = $query->fetch(PDO::FETCH_NUM);
+		
+		if (in_array($theater_id, $theaters)) {
+			system("echo 'theater id is valid' >> $log_file");
 			
-			$conn = DB::connection();
+				
 			
-			$query = $conn->prepare("SELECT id FROM theater");
+			$query = $conn->prepare("SELECT id from movie");
 			$query->execute();
-			$theaters = $query->fetch(PDO::FETCH_NUM);
+			$movies = $query->fetch(PDO::FETCH_NUM);
 			
-			if (in_array($theater_id, $theaters)) {
+			if (in_array($movie_id,$movies)) {
+				system("echo 'movie id is valid' >> $log_file");
 				
-				
-
-				$query = $conn->prepare("SELECT id from movie");
+				$query = $conn->prepare("SELECT duration from movie where id=:movie_id");
+				$query->bindParam(':movie_id', $movie_id);
 				$query->execute();
-				$movies = $query->fetch(PDO::FETCH_NUM);
+
+				system("echo 'query seelct duration success' >> $log_file");
 				
-				if (in_array($movie_id,$movies)) {
-					$query = $conn->prepare("SELECT duration from movie where id=$movie_id");
-					$query->execute();
-
-					$duration_sec = $query->fetch(PDO::FETCH_ASSOC);
-					$duration_sec = $duration_sec[0]['duration'] * 60;
+				
+				$duration_sec = $query->fetch(PDO::FETCH_ASSOC);
+				$duration_sec = $duration_sec['duration'];
+				$duration_sec = $duration_sec * 60;
+				system("echo 'duration_sec variable value: $duration_sec' >> $log_file");
+				
+				$end_at->add(new DateInterval("PT".$duration_sec."S"));
+				$end_at = $end_at->format("d.m.Y H:i");
+				$start_at = $start_at->format("d.m.Y H:i");
+				system("echo 'end_at variable value: $end_at' >> $log_file");
+				
+				$query = $conn->prepare("SELECT count(id) FROM timetable where theater_id=$theater_id 
+                                                                                           AND start_at BETWEEN '$start_at' AND '$end_at' 
+                                                                                            AND end_at BETWEEN '$start_at' AND '$end_at'");
+				
+				$query->execute();
+				$overlapping_timetables = $query->fetch(PDO::FETCH_ASSOC);
+				$res=$overlapping_timetables['count'];
+				system("echo 'overlapping timetables: $res' >> $log_file");
+				
+				
+				if ($overlapping_timetables['count'] == 0) {
+					system("echo 'no overlapping timetables' >> $log_file");
 					
-					$movie = $movies[array_search($movie_id,$movies)];
-
-					date_add($end_at, new DateInterval("PT".$duration_sec."S"));
-
-						
-					$query = $conn->prepare("SELECT id FROM timetable where theater_id=$theater_id 
-                                                                                           AND start_at BETWEEN $start_at AND $end_at 
-                                                                                            AND end_at BETWEEN $start_at AND $end_at");
-					
-					$query->execute();
-					$overlapping_timetables = $query->fetchAll();
-
-					
-		
 					return true;
 					
-					
-					
+				} else {
+					return false;
+				}
 				
-				} else {return false;}
 				
 				
-			} else  { return false;} 
-		
-		} catch (Exception $e) {
-
-			// ei onnistu
+			} else {
+				return false;
+			}
+			
+			
+		} else  {
 			return false;
 		}
-			
-			
-		
-
-
-		
-	
 		
 	}
+		
 	
 	
 	private function getDB() {
