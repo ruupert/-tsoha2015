@@ -7,15 +7,18 @@
 {% for detail in timetable.details %}
 
  <div class="page-header">
-	 <h1>{{detail.id}}</h1>
+	 <h1>{{detail.movie_name}} @ {{ detail.theater_name }} {{detail.start_at}}</h1>
  	 <p>
 		 {% for link in links %}
 		    <a href="{{link.url}}">{{link.name}}</a>
 		 {% endfor %}
 		  
  </div>
-  <p>Teatteri {{detail.theater_id}}</p>
-  <p>Elokuva {{detail.movie_id}}</p>
+ <p>Elokuva {{detail.movie_name}}</p>
+	 <img src="data:image/png;base64,{{detail.movie_image}}"/>
+ <p>Teatteri {{detail.theater_name}}</p>
+ 	 <img src="data:image/png;base64,{{detail.theater_image}}"/>
+	 
    
   {% else %}
   Ei tietoja?! :O

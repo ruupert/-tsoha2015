@@ -17,7 +17,7 @@ class TimetableModel extends BaseModel{
 
 		switch ($param) {
 			case 'allfields':
-				$query = $conn->prepare('SELECT * FROM timetable;');
+				$query = $conn->prepare('select timetable.*, movie.name as movie_name, theater.name as theater_name, timetable.start_at, timetable.end_at from timetable, movie, theater where timetable.movie_id=movie.id and timetable.theater_id=theater.id;');
 				break;
 		}
 		
@@ -28,7 +28,8 @@ class TimetableModel extends BaseModel{
 
 	public static function find($id){
    		$conn = DB::connection();
-		$query = $conn->prepare("SELECT * FROM timetable where id=$id;");
+		$query = $conn->prepare("select timetable.*, movie.name as movie_name, encode(movie.image::bytea,'base64') as movie_image,  theater.name as theater_name, encode(theater.image::bytea,'base64') as theater_image, timetable.start_at, timetable.end_at from timetable, movie, theater where timetable.id=:timetable_id and timetable.movie_id=movie.id and timetable.theater_id=theater.id;");
+		$query->bindParam(':timetable_id', $id);
 		$query->execute();
 		
 		return array('details' => $query->fetchAll());

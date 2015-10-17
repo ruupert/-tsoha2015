@@ -9,16 +9,16 @@
   </div>
   <table>
 	  <tr>
-		  <th></th>
-		  <th>Nimi</th>
-		  <th>Kuvaus</th>
-		  <th>Kesto (min)</th>
+		  <th>Elokuva</th>
+		  <th>Teatteri</th>
+		  <th>Alkaa</th>
+		  <th>Loppuu</th>
 	  </tr>
 	  
     {% for timetable in timetables %}
 	  <tr class='clickable' data-href='timetable/{{timetable.id}}/show'>
-		  <td></td>
-		  <td>{{ timetable.id }}</td>
+		  <td>{{ timetable.movie_name }}</td>
+		  <td>{{ timetable.theater_name }}</td>
 		  <td>{{ timetable.start_at }}</td>
 		  <td>{{ timetable.end_at }}</td>
 	  </tr>

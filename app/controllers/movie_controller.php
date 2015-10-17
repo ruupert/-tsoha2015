@@ -11,7 +11,6 @@ class MovieController extends BaseController{
 	
 	public static function show($id){
 
-
 		View::make('movie-show.html',array('movie' => MovieModel::find($id),'links' => parent::generate_links()));
 		
     		

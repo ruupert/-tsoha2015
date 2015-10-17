@@ -17,7 +17,26 @@
   <p>{{detail.description}}</p>
   <p>Kesto {{detail.duration}} minuuttia.</p>
   <img src="data:image/png;base64,{{detail.image}}"/>
-   
+
+  <h2>Naytokset</h2>
+  <table>
+	  <tr>
+		  <th>Teatteri</th>
+		  <th>Alkaa</th>
+		  <th>Loppuu</th>
+	  </tr>
+	  
+  {% for relation in movie.related %}
+          <tr class='clickable' data-href='../../timetable/{{relation.timetable_id}}/show'>
+		  <td>{{ relation.name }}</td>
+		  <td>{{ relation.start_at }}</td>
+		  <td>{{ relation.end_at }}</td>
+	  </tr>
+	  
+  {% else %}
+  {% endfor %}
+  </table>
+  
   {% else %}
   Ei tietoja?! :O
   {% endfor %}

@@ -31,10 +31,15 @@ class MovieModel extends BaseModel{
 
 	public static function find($id){
    		$conn = DB::connection();
-		$query = $conn->prepare("SELECT name,description, duration, encode(image::bytea,'base64') as image FROM movie where id=$id;");
-		$query->execute();
+		$movie = $conn->prepare("SELECT name,description, duration, encode(image::bytea,'base64') as image FROM movie where id=$id;");
+		$movie->execute();
 		
-		return array('details' => $query->fetchAll());
+  		$conn = DB::connection();
+		$related = $conn->prepare("SELECT theater.name, timetable.start_at, timetable.end_at, timetable.id as timetable_id FROM movie, timetable, theater where movie.id=$id and timetable.movie_id=$id and timetable.theater_id=theater.id;");
+		$related->execute();
+		
+		
+		return array('details' => $movie->fetchAll(), 'related' => $related->fetchAll());
 	}
 	
 	function save($id, $name, $description, $duration, $image){
