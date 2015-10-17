@@ -22,7 +22,7 @@ class TimetableModel extends BaseModel{
 		}
 		
 		$query->execute();
-		return array('movies' => $query->fetchAll());
+		return array('timetables' => $query->fetchAll());
 		
 	}
 
@@ -92,8 +92,8 @@ class TimetableModel extends BaseModel{
 			$end_at = new DateTime($start_at);
 			$start_at = new DateTime($start_at);
 			$end_at->add(new DateInterval("PT".$duration_sec."S"));
-			$end_at = $end_at->format("d.m.Y H:i");
-			$start_at = $start_at->format("d.m.Y H:i");
+			$end_at = $end_at->format("Y-m-d H:i");
+			$start_at = $start_at->format("Y-m-d H:i");
 			
 
 			system("echo 'add variables values: $movie, $theater, $start_at, $end_at' >> $log_file");
@@ -125,20 +125,22 @@ class TimetableModel extends BaseModel{
 		
 		$conn = DB::connection();
 		
-		$query = $conn->prepare("SELECT id FROM theater");
+		$query = $conn->prepare("SELECT id FROM theater where id=:theater_id");
+		$query->bindParam(':theater_id', $theater_id);
 		$query->execute();
-		$theaters = $query->fetch(PDO::FETCH_NUM);
+		$theaters = $query->fetch(PDO::FETCH_ASSOC);
 		
-		if (in_array($theater_id, $theaters)) {
+		if ($theaters['id'] == $theater_id) {
 			system("echo 'theater id is valid' >> $log_file");
 			
 				
 			
-			$query = $conn->prepare("SELECT id from movie");
+			$query = $conn->prepare("SELECT id from movie where id=:movie_id");
+			$query->bindParam(':movie_id', $movie_id); 
 			$query->execute();
-			$movies = $query->fetch(PDO::FETCH_NUM);
+			$movies = $query->fetch(PDO::FETCH_ASSOC);
 			
-			if (in_array($movie_id,$movies)) {
+			if ($movies['id'] == $movie_id) {
 				system("echo 'movie id is valid' >> $log_file");
 				
 				$query = $conn->prepare("SELECT duration from movie where id=:movie_id");
@@ -154,13 +156,11 @@ class TimetableModel extends BaseModel{
 				system("echo 'duration_sec variable value: $duration_sec' >> $log_file");
 				
 				$end_at->add(new DateInterval("PT".$duration_sec."S"));
-				$end_at = $end_at->format("d.m.Y H:i");
-				$start_at = $start_at->format("d.m.Y H:i");
+				$end_at = $end_at->format("Y-m-d H:i");
+				$start_at = $start_at->format("Y-m-d H:i");
 				system("echo 'end_at variable value: $end_at' >> $log_file");
 				
-				$query = $conn->prepare("SELECT count(id) FROM timetable where theater_id=$theater_id 
-                                                                                           AND start_at BETWEEN '$start_at' AND '$end_at' 
-                                                                                            AND end_at BETWEEN '$start_at' AND '$end_at'");
+				$query = $conn->prepare("SELECT count(id) FROM timetable where theater_id=$theater_id AND (start_at <= '$start_at' AND end_at >= '$end_at')");
 				
 				$query->execute();
 				$overlapping_timetables = $query->fetch(PDO::FETCH_ASSOC);

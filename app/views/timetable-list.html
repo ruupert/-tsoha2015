@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class="page-header">
-    <h1>Elokuvat</h1>
+    <h1>Naytokset</h1>
     {% for link in links %}
        <a href="{{link.url}}">{{link.name}}</a>
     {% endfor %}
@@ -15,15 +15,15 @@
 		  <th>Kesto (min)</th>
 	  </tr>
 	  
-    {% for movie in movies %}
-	  <tr class='clickable' data-href='movie/{{movie.id}}/show'>
+    {% for timetable in timetables %}
+	  <tr class='clickable' data-href='timetable/{{timetable.id}}/show'>
 		  <td></td>
-		  <td>{{ movie.name }}</td>
-		  <td>{{ movie.description }}</td>
-		  <td>{{ movie.duration }}</td>
+		  <td>{{ timetable.id }}</td>
+		  <td>{{ timetable.start_at }}</td>
+		  <td>{{ timetable.end_at }}</td>
 	  </tr>
   {% else %}
-  Ei leffoja :(
+  Ei naytoksia :(
   {% endfor %}
   
 

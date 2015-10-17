@@ -4,7 +4,7 @@ class TimetableController extends BaseController{
 
 	
 	public static function index(){
-		
+		Kint::dump(array_merge(TimetableModel::all('allfields'), array('links' => parent::addnew_link('timetable'))));
 		View::make('timetable-list.html', array_merge(TimetableModel::all('allfields'), array('links' => parent::addnew_link('timetable'))));
 		
 	}

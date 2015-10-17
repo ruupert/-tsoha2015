@@ -4,19 +4,18 @@
 
 
 
-{% for detail in movie.details %}
+{% for detail in timetable.details %}
 
  <div class="page-header">
-	 <h1>{{detail.name}}</h1>
+	 <h1>{{detail.id}}</h1>
  	 <p>
 		 {% for link in links %}
 		    <a href="{{link.url}}">{{link.name}}</a>
 		 {% endfor %}
 		  
  </div>
-  <p>{{detail.description}}</p>
-  <p>Kesto {{detail.duration}} minuuttia.</p>
-  <img src="data:image/png;base64,{{detail.image}}"/>
+  <p>Teatteri {{detail.theater_id}}</p>
+  <p>Elokuva {{detail.movie_id}}</p>
    
   {% else %}
   Ei tietoja?! :O
