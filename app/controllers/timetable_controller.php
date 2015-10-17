@@ -11,7 +11,7 @@ class TimetableController extends BaseController{
 	public static function show($id){
 
 
-		View::make('timetable-show.html',array('timetable' => TimetableModel::find($id),'links' => parent::generate_links()));
+		View::make('timetable-show.html',array('timetable' => TimetableModel::find($id),'links' => array_merge(parent::generate_links(), parent::addnew_reservation_link($id))));
 		
     		
 	}	  

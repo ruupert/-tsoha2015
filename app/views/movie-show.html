@@ -18,6 +18,8 @@
   <p>Kesto {{detail.duration}} minuuttia.</p>
   <img src="data:image/png;base64,{{detail.image}}"/>
 
+	{% if movie.related is not empty %}  
+
   <h2>Naytokset</h2>
   <table>
 	  <tr>
@@ -25,7 +27,6 @@
 		  <th>Alkaa</th>
 		  <th>Loppuu</th>
 	  </tr>
-	  
   {% for relation in movie.related %}
           <tr class='clickable' data-href='../../timetable/{{relation.timetable_id}}/show'>
 		  <td>{{ relation.name }}</td>
@@ -36,6 +37,8 @@
   {% else %}
   {% endfor %}
   </table>
+
+  {% endif %}
   
   {% else %}
   Ei tietoja?! :O

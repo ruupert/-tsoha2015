@@ -12,3 +12,7 @@ tr.clickable:hover {
     background: grey;
     cursor:pointer;
 }
+
+td {
+    padding-right:15px;
+}

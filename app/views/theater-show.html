@@ -18,6 +18,8 @@
   <p>Istumapaikkoja {{detail.seats}}.</p>
   <img src="data:image/png;base64,{{detail.image}}"/>
 
+  {% if theater.related is not empty %}
+  
   <h2>Naytokset</h2>
   <table>
 	  <tr>
@@ -36,8 +38,7 @@
 	  {% else %}
 	  {% endfor %}
   </table>
-  
-
+  {% endif %}
   
   {% else %}
   Ei tietoja?! :O
