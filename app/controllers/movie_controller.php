@@ -31,7 +31,8 @@ class MovieController extends BaseController{
 			));
 			$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1, "value" => $result['name'])));
 			$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1, "value" => $result['description'])));
-			$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1, "value" => $result['duration'])));
+			$duration = $result['duration'];
+			$form->addElement(new \PFBC\Element\HTML("<p>Kesto $duration (ei implementoitu, koska muutoksen validointi kaikkien teatterien naytoksien kanssa menee jootiks)</p>"));
 			$form->addElement(new \PFBC\Element\HTML("<img src='data:image/png;base64," . $result['image'] . "'/>"));
 			$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
 			$form->addElement(new \PFBC\Element\Button);
@@ -83,7 +84,7 @@ class MovieController extends BaseController{
 		if (parent::is_admin()==true) {
 		
 			$obj = new MovieModel();
-			$obj->save($id,$_POST['name'],$_POST['description'],$_POST['duration'],$_FILES['image']);
+			$obj->save($id,$_POST['name'],$_POST['description'],$_FILES['image']);
 			header('Location: ' . $_SERVER['HTTP_REFERER']);
 			Redirect::to("/movie/$id/show");
 

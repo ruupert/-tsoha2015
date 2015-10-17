@@ -30,7 +30,8 @@ class TheaterController extends BaseController{
 			));
 			$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1, "value" => $result['name'])));
 			$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1, "value" => $result['description'])));
-			$form->addElement(new \PFBC\Element\Number("Istumapaikkoja", "seats", array("required" => 1, "value" => $result['seats'])));
+			$seats  =  $result['seats'];
+			$form->addElement(new \PFBC\Element\HTML("<p>Istumapaikkoja $seats (ei implementoitu, koska kaikkien naytoksien istumapaikat pitaisi validoida.)</p>"));
 			$form->addElement(new \PFBC\Element\HTML("<img src='data:image/png;base64," . $result['image'] . "'/>"));
 			$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
 			$form->addElement(new \PFBC\Element\Button);
@@ -84,7 +85,7 @@ class TheaterController extends BaseController{
 		if (parent::is_admin()==true) {
 		
 			$obj = new TheaterModel();
-			$obj->save($id,$_POST['name'],$_POST['description'],$_POST['seats'],$_FILES['image']);
+			$obj->save($id,$_POST['name'],$_POST['description'],$_FILES['image']);
 			header('Location: ' . $_SERVER['HTTP_REFERER']);
 			Redirect::to("/theater/$id/show");
 

@@ -42,7 +42,7 @@ class MovieModel extends BaseModel{
 		return array('details' => $movie->fetchAll(), 'related' => $related->fetchAll());
 	}
 	
-	function save($id, $name, $description, $duration, $image){
+	function save($id, $name, $description, $image){
 
 		$name = strip_tags($name);
 		$description =strip_tags($description);
@@ -54,7 +54,7 @@ class MovieModel extends BaseModel{
 			$this->validate_image($image) == true) {
 
 			try {
-				$query = $this->conn->prepare("UPDATE movie SET name=:name, description=:description, duration=:duration, image=:img_data WHERE id=:id");
+				$query = $this->conn->prepare("UPDATE movie SET name=:name, description=:description, image=:img_data WHERE id=:id");
  				$img_file = fopen($image['tmp_name'], 'r');
 				$img_data = fread($img_file,$image['size']);
 				$query->bindParam(':img_data', $img_data, PDO::PARAM_LOB);
