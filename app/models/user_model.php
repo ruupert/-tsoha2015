@@ -59,7 +59,6 @@ class UserModel extends BaseModel{
 	public static function create($username, $password, $name, $lastname) {
 		$message = "";
 		$path = "";
-		$log_file = '/home/users/ruupert/sites/ruupert.kapsi.fi/www/tsoha2015/log/user.log';
                 $conn = DB::connection();
 		$query = $conn->prepare("SELECT (SELECT count(username) FROM users where username='$username') as username_count, (SELECT count(username) FROM users) as total_users");
 		$query->execute();

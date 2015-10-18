@@ -3,6 +3,7 @@
 # Missä kansiossa komento suoritetaan
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
+
 source $DIR/config/environment.sh
 
 echo "Siirretään tiedostot users-palvelimelle..."
