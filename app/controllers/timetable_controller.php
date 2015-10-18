@@ -21,25 +21,40 @@ class TimetableController extends BaseController{
 			$result = TimetableModel::find($id);
 			$result = $result['details'][0];
 			
+			$form_action = "/timetable/$id/update";
 			
+                        $movies = MovieModel::all('name');
+
+			//$movie_options = array();
+			//$movie_values = array();
+			$movie_options = "";
+
+			foreach ($movies['movies'] as $movie) {
+
+
+				$tmp_id  = $movie['id'];
+				$tmp_name = $movie['name'];
+				if ($tmp_id==$result['movie_id']) {
+					$movie_options = $movie_options .  "<option selected='selected' value='$tmp_id'>$tmp_name</option>";
+				} else {
+					$movie_options = $movie_options .  "<option value='$tmp_id'>$tmp_name</option>";
+				}
+			}
+
+			$theaters = TheaterModel::all('name');
+
+			$theater_options = "";
+			foreach ($theaters['theaters'] as $theater) {
+				$tmp_id = $theater['id'];
+				$tmp_name = $theater['name'];
+				if ($tmp_id==$result['theater_id']) {
+					$theater_options = $theater_options . "<option selected='selected' value='$tmp_id'>$tmp_name</option>";
+				} else {
+				$theater_options = $theater_options . "<option value='$tmp_id'>$tmp_name</option>";
+				}
+			}
 			
-			
-			$form = new \PFBC\Form("form-elements");
-			
-			$form->configure(array(
-			"prevent" => array("bootstrap", "jQuery"), "action" => "./update"
-			));
-			$form->addElement(new \PFBC\Element\Textbox("Nimi", "name", array("required" => 1, "value" => $result['name'])));
-			$form->addElement(new \PFBC\Element\Textarea("Kuvaus", "description", array("required" => 1, "value" => $result['description'])));
-			$form->addElement(new \PFBC\Element\Number("Kesto", "duration", array("required" => 1, "value" => $result['duration'])));
-			$form->addElement(new \PFBC\Element\HTML("<img src='data:image/png;base64," . $result['image'] . "'/>"));
-			$form->addElement(new \PFBC\Element\File("Kuvatiedosto (.png tai .jpg)", "image"));
-			$form->addElement(new \PFBC\Element\Button);
-			$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
-				"onclick" => "history.go(-1);"
-			)));
-			
-			
+
 			$form = new \PFBC\Form("form-elements");
 
 			$form->configure(array(
