@@ -40,60 +40,77 @@ class TimetableController extends BaseController{
 			)));
 			
 			
+			$form = new \PFBC\Form("form-elements");
+
+			$form->configure(array(
+				"prevent" => array("bootstrap", "jQuery"), "action" => $form_action, "method" => "post"
+			));
+
+			$form->addElement(new \PFBC\Element\HTML("<select name='Movie' id='form-elements-element-0'>" . $movie_options . "</select>"));
+			$form->addElement(new \PFBC\Element\HTML("<select name='Theater' id='form-elements-element-0'>" . $theater_options . "</select>"));
+			$form->addElement(new \PFBC\Element\DateTime("Näytöksen alkuajankohta:", "DateTime"));
+			// myohemmin..
+			//$form->addElement(new \PFBC\Element\Select("Elokuva:", "Movie", $movie_options, $movie_values));
+			//$form->addElement(new \PFBC\Element\Select("Teatteri:", "Theater", $theater_options));
+
+
+			$form->addElement(new \PFBC\Element\Button);
+			$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
+				"onclick" => "history.go(-1);"
+			)));
+
    			View::make('form-layout.html', array('form' => $form->render($returnHTML = true)));
 		}
 	}
 	public static function add(){
 		if (parent::is_admin()==true) {
-			
-			$form_action = BASE_PATH . "/timetable/create";
 
+			$form_action = BASE_PATH . "/timetable/create";
 			$movies = MovieModel::all('name');
-			
-			//		$movie_options = array();
-			//		$movie_values = array();
+
+			//$movie_options = array();
+			//$movie_values = array();
 			$movie_options = "";
-			
+
 			foreach ($movies['movies'] as $movie) {
-				
-				
+
+
 				$id  = $movie['id'];
 				$name = $movie['name'];
 				$movie_options = $movie_options .  "<option value='$id'>$name</option>";
-				
+
 			}
-			
+
 			$theaters = TheaterModel::all('name');
-			
+
 			$theater_options = "";
 			foreach ($theaters['theaters'] as $theater) {
-			$id = $theater['id'];
+				$id = $theater['id'];
 				$name = $theater['name'];
 				$theater_options = $theater_options . "<option value='$id'>$name</option>";
-				
+
 			}
-			
+
 			$form = new \PFBC\Form("form-elements");
-			
+
 			$form->configure(array(
 				"prevent" => array("bootstrap", "jQuery"), "action" => $form_action, "method" => "post"
 			));
-			
+
 			$form->addElement(new \PFBC\Element\HTML("<select name='Movie' id='form-elements-element-0'>" . $movie_options . "</select>"));
 			$form->addElement(new \PFBC\Element\HTML("<select name='Theater' id='form-elements-element-0'>" . $theater_options . "</select>"));
+			$form->addElement(new \PFBC\Element\DateTime("Näytöksen alkuajankohta:", "DateTime"));
+			// myohemmin..
+			//$form->addElement(new \PFBC\Element\Select("Elokuva:", "Movie", $movie_options, $movie_values));
+			//$form->addElement(new \PFBC\Element\Select("Teatteri:", "Theater", $theater_options));
 
-			$form->addElement(new \PFBC\Element\DateTime("Näytöksen alkuajankohta:", "DateTime"));	
-			// myohemmin.. 
-			//		$form->addElement(new \PFBC\Element\Select("Elokuva:", "Movie", $movie_options, $movie_values));
-			//		$form->addElement(new \PFBC\Element\Select("Teatteri:", "Theater", $theater_options));
-			
-			
+
 			$form->addElement(new \PFBC\Element\Button);
 			$form->addElement(new \PFBC\Element\Button("Takaisin", "button", array(
 				"onclick" => "history.go(-1);"
-		)));
-
+			)));
 			View::make('form-layout.html', array('form' => $form->render($returnHTML = true), 'page_title' => 'Uusi näytös'));
+			
 			
 		}
 	}	

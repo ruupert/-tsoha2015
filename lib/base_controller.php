@@ -68,7 +68,18 @@
 		  }
 	  }
 
+ 	  public static function generate_reservation_links() {
+ 		  if (self::check_logged_in()==true) {
+			  return array('link' => array('url' => $_SERVER['HTTP_REFERER'], 'name' => 'Takaisin'),
+				                 array('url' => './edit', 'name' => 'Muokkaa'),
+      				                 array('url' => './destroy', 'name' => 'Poista'));
+			  
+		  } else {
+			  return array('link' => array('url' => $_SERVER['HTTP_REFERER'], 'name' => 'Takaisin'));
+		  } 
+	  }
 
+	  
 	  
 	  public static function addnew_link($controller) {
   		  if (self::is_admin()==true) {

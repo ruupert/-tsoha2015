@@ -17,10 +17,10 @@ class ReservationModel extends BaseModel{
 
 		switch ($param) {
 			case 'allfields':
-				$query = $conn->prepare("SELECT * FROM reservation");
+				$query = $conn->prepare("select reservation.id, user_id, timetable_id, timetable.movie_id, timetable.start_at, timetable.theater_id, movie.name, theater.name, users.name, users.username, users.lastname from reservation LEFT JOIN (select * from timetable) as timetable on (reservation.timetable_id=timetable.id) LEFT JOIN (select * from movie) as movie on (timetable.movie_id=movie.id)  LEFT JOIN (select * from theater) as theater on (timetable.theater_id=theater.id) LEFT JOIN (select * from users) as users on (users.id=reservation.user_id)");
 				break;
 			case 'userfields':
-				$query = $conn->prepare("SELECT * FROM reservation WHERE user_id='$user'");
+				$query = $conn->prepare("select reservation.id, user_id, timetable_id, timetable.movie_id, timetable.start_at, timetable.theater_id, movie.name, theater.name, users.name, users.username, users.lastname from reservation LEFT JOIN (select * from timetable) as timetable on (reservation.timetable_id=timetable.id) LEFT JOIN (select * from movie) as movie on (timetable.movie_id=movie.id)  LEFT JOIN (select * from theater) as theater on (timetable.theater_id=theater.id) LEFT JOIN (select * from users) as users on (users.id=reservation.user_id) where user_id='$user'");
 				break;
 		}
 		
@@ -31,49 +31,44 @@ class ReservationModel extends BaseModel{
 
 	public static function find($id){
    		$conn = DB::connection();
-		$query = $conn->prepare("select timetable.*, movie.name as movie_name, encode(movie.image::bytea,'base64') as movie_image,  theater.name as theater_name, encode(theater.image::bytea,'base64') as theater_image, timetable.start_at, timetable.end_at from timetable, movie, theater where timetable.id=:timetable_id and timetable.movie_id=movie.id and timetable.theater_id=theater.id;");
-		$query->bindParam(':timetable_id', $id);
+		$query = $conn->prepare("select reservation.id, reservation.quantity, user_id, timetable_id, timetable.movie_id, timetable.start_at, timetable.theater_id, movie.name, theater.name, users.name, users.username, users.lastname from reservation LEFT JOIN (select * from timetable) as timetable on (reservation.timetable_id=timetable.id) LEFT JOIN (select * from movie) as movie on (timetable.movie_id=movie.id)  LEFT JOIN (select * from theater) as theater on (timetable.theater_id=theater.id) LEFT JOIN (select * from users) as users on (users.id=reservation.user_id) where reservation.id=:reservation_id");
+		$query->bindParam(':reservation_id', $id);
 		$query->execute();
 		
 		return array('details' => $query->fetchAll());
 	}
 	
-	public static function save($id, $movie, $theater, $start_at){
+	public static function save($id, $seats, $user, $admin, $timetable_id){
+		
+		$conn = DB::connection();
+		$result = self::find($id);
+		$result = $result['details'][0];
+		
 
- 		if (self::validate_timetable($movie,$theater,$start_at) == true){
-			
-			$_SESSION['flash_message'] = json_encode('valid');
-			
-			try {
-				$query = $this->conn->prepare("UPDATE timetable SET name=:name, description=:description, duration=:duration, image=:img_data WHERE id=:id");
- 				$img_file = fopen($image['tmp_name'], 'r');
-				$img_data = fread($img_file,$image['size']);
-				$query->bindParam(':img_data', $img_data, PDO::PARAM_LOB);
+		if (self::validate_seats($timetable_id, $seats, $result['quantity'])==true) {
+
+			if ($admin==true) {
+				$query = $conn->prepare("UPDATE reservation SET quantity=:qty where id=:id");
 				
-			} catch (Exception $e) {
-				
-			        $query = $this->conn->prepare("UPDATE timetable SET name=:name, description=:description, duration=:duration WHERE id=:id");
-				
+			} else {
+
+				$query = $conn->prepare("SELECT id FROM users WHERE username='$user'");
+				$query->execute();
+				$u = $query->fetchAll(PDO::FETCH_NUM);
+				$query = $conn->prepare("UPDATE reservation SET quantity=:qty where id=:id and user_id=:uid");
+				$query->bindParam(":uid",$u[0][0]);
+
 			}
 			
-			$query->bindParam(':id', $id);
-			$query->bindParam(':name', $name);
-			$query->bindParam(':description', $description);
-			$query->bindParam(':duration', $duration);
-
-
-
+			$query->bindParam(":id",$id);
+			$query->bindParam(":qty",$seats);
 			$query->execute();
+
 			
-
-
-			return true;
+			
 		} else {
-			// ja tässä laitettais se errorrr message... ehkä.
-			return false;
+			// eipa enaa kaynytkaan.
 		}
-		
-		
 	}
 	public static function add($timetable_id, $seats, $user){
 		// lol... pitais kai tehda enterpriceless kamaa eli lock sarake timetableen lisaks niin, etta kun tama rupee tekemaan jotain niin ensin lukitaan BEGIN; sossonsoo locked=true; COMMIT; 
@@ -82,7 +77,7 @@ class ReservationModel extends BaseModel{
 		// jos locked=true, niin odotetaan 0.x sekuntia ja yritetaan uudestaan. yrityksia voisi olla 10, jonka jalkeen luovutetaan.
 		//
 		// Edeltava on semi raskas tehda siihen aikaan nahden mita on jaljella joten unohdetaan paallekkaisyydet toistaiseks:
-		if (self::validate_seats($timetable_id, $seats)==true) {
+		if (self::validate_seats($timetable_id, $seats, 0)==true) {
 			// selvitetaan mika id kayttajanimella on.
 			$conn = DB::connection();
 			$query = $conn->prepare("SELECT id FROM users WHERE username='$user'");
@@ -106,15 +101,18 @@ class ReservationModel extends BaseModel{
 		
 	}
 
-	private static function validate_seats($id,$requested_seats) {
+	private static function validate_seats($id,$requested_seats, $current_seats) {
+		
 		$result = self::get_available_seats($id);
                 $reserved_seats = $result['result'][0]['quantity'];
 		$total_seats = $result['result'][0]['seats'];
 
-		$available_seats = $total_seats - $reserved_seats;
+		$available_seats = $total_seats - $current_seats - $reserved_seats;
 
 		if ($available_seats > $requested_seats) {
 			return true;
+			
+			
 		} else {
 			return false;
 		}

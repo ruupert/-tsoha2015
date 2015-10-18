@@ -11,16 +11,16 @@
 	  <tr>
 		  <th>Elokuva</th>
 		  <th>Teatteri</th>
- 		  <th>Alkaa</th>
-		  <th>Loppuu</th>
+ 		  <th>Naytos</th>
+		  <th>Varaaja</th>
 	  </tr>
 	  
     {% for reservation in reservations %}
 	  <tr class='clickable' data-href='reservation/{{reservation.id}}/show'>
-		  <td>{{ reservation.timetable_id }}</td>
-		  <td>{{ reservation.quantity }}</td>
+		  <td>{{ reservation[6] }}</td>
+		  <td>{{ reservation[7] }}</td>
 		  <td>{{ reservation.start_at }}</td>
-		  <td>{{ reservation.end_at }}</td>
+		  <td>{{ reservation.username }}</td>
 	  </tr>
   {% else %}
   Ei naytoksia :(
